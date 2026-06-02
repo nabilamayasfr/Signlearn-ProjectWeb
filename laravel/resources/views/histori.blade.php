@@ -23,9 +23,6 @@
         <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-extrabold text-[#C82D85] mb-1.5">Riwayat Belajarku</h1>
         <p class="text-[0.95rem] text-[#7A4B78] font-medium">Lihat semua latihan yang sudah kamu selesaikan</p>
       </div>
-      <img src="{{ asset('assets/icon-histori.png') }}" alt="Riwayat"
-           class="w-[72px] h-[72px] object-contain shrink-0 drop-shadow-[0_4px_10px_rgba(200,45,133,0.20)]"
-           onerror="this.style.display='none'">
     </div>
   </div>
 
@@ -152,7 +149,7 @@
         class="inline-block mt-4 px-6 py-2.5 rounded-full bg-[#C82D85] text-white
                 text-[0.88rem] font-bold no-underline
                 hover:bg-[#951651] transition-colors duration-200">
-        Mulai Latihan →
+        Mulai Latihan
       </a>
     </div>
   @endforelse

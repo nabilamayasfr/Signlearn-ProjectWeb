@@ -50,7 +50,7 @@
                 Beranda
                 <span class="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C82D85] rounded transition-all duration-200 group-hover:w-full"></span>
             </a>
-            <a href="{{ route('pembelajaran') }}" class="relative pb-[3px] hover:text-[#C82D85] group">
+            <a href="{{ route('pembelajaran.index') }}" class="relative pb-[3px] hover:text-[#C82D85] group">
                 Pembelajaran
                 <span class="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C82D85] rounded transition-all duration-200 group-hover:w-full"></span>
             </a>
@@ -89,12 +89,12 @@
             </p>
 
             <div class="flex gap-[14px] flex-wrap">
-                <a href="{{ route('pembelajaran') }}"
+                <a href="{{ route('pembelajaran.index') }}"
                    class="px-[26px] py-[11px] rounded-[12px] bg-white text-[#C82D85] border-[1.5px] border-[#F7C4DF] hover:bg-[#F7DAED] shadow transition">
                     Mulai Belajar
                 </a>
 
-                <a href="{{ route('latihan') }}"
+                <a href="{{ route('login') }}"
                    class="px-[26px] py-[11px] rounded-[12px] bg-[#C82D85] text-white shadow-[0_8px_24px_rgba(200,45,133,0.35)] hover:bg-[#951651] transition">
                     Coba Latihan
                 </a>

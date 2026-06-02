@@ -38,7 +38,6 @@
                 class="bg-white rounded-2xl shadow-sm border-2 border-pink-400 p-4 cursor-pointer transition-all duration-300">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-3">
-                        <span class="text-2xl">🤟</span>
                         <div>
                             <h3 class="text-base font-extrabold text-gray-800">BISINDO</h3>
                             <p class="text-gray-400 text-xs">Bahasa isyarat Indonesia</p>
@@ -58,7 +57,6 @@
                 class="bg-white rounded-2xl shadow-sm border-2 border-gray-200 p-4 cursor-pointer transition-all duration-300">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-3">
-                        <span class="text-2xl">✋</span>
                         <div>
                             <h3 class="text-base font-extrabold text-gray-800">SIBI</h3>
                             <p class="text-gray-400 text-xs">Sistem isyarat Bahasa Indonesia</p>

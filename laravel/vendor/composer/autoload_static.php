@@ -536,6 +536,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AdminAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminAuthController.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
+        'App\\Http\\Controllers\\Admin\\AdminKuisController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AdminKuisController.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HistoriController' => __DIR__ . '/../..' . '/app/Http/Controllers/HistoriController.php',
