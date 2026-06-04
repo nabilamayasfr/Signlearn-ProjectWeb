@@ -13,10 +13,12 @@ class PraktikResult extends Model
         'skor_ai',
         'status',
         'prediksi_ai',
+        'duration_seconds',
     ];
 
     protected $casts = [
         'skor_ai' => 'float',
+        'duration_seconds' => 'integer',
     ];
 
     // Relasi ke user

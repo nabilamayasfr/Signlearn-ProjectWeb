@@ -12,17 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('praktik_results', function (Blueprint $table) {
-            //
+            $table->unsignedSmallInteger('duration_seconds')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('praktik_results', function (Blueprint $table) {
-            //
+            $table->dropColumn('duration_seconds');
         });
     }
 };

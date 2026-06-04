@@ -48,13 +48,13 @@
                 </span>
             </div>
 
-            {{-- Timer Display ← INI YANG HILANG --}}
+            {{-- Timer Display --}}
             <div class="flex flex-col items-center">
                 <div class="w-16 h-16 rounded-2xl bg-white shadow-md border border-pink-100
                             flex items-center justify-center">
                     <span id="timerText"
                           class="text-3xl font-extrabold"
-                          style="color: #C07EB5;">5</span>
+                          style="color: #C07EB5;">30</span>
                 </div>
                 <p class="text-xs text-gray-400 mt-1">detik</p>
             </div>
@@ -83,7 +83,7 @@
                 {{-- Center line --}}
                 <div class="absolute top-0 bottom-0 left-1/2 w-px bg-pink-400 opacity-40"></div>
 
-                {{-- Timer Overlay saat waktu habis ← INI YANG HILANG --}}
+                {{-- Timer Overlay saat waktu habis --}}
                 <div id="timerOverlay"
                      class="absolute inset-0 bg-black bg-opacity-60
                             flex-col items-center justify-center hidden">
@@ -138,12 +138,13 @@
 @push('scripts')
 <script>
     // ── STATE ────────────────────────────────────────────
-    let timeLeft         = 30;   // ← 30 detik (lebih wajar dari 5 detik)
-    let timerInterval    = null;
+    const DURASI_AWAL     = 30;
+    let timeLeft          = DURASI_AWAL;
+    let timerInterval     = null;
     let detectionInterval = null;
-    let cameraStream     = null;
-    let isProcessing     = false;
-    let sudahDisimpan    = false; // ← guard supaya tidak simpan 2x
+    let cameraStream      = null;
+    let isProcessing      = false;
+    let sudahDisimpan     = false;
 
     const timerText       = document.getElementById('timerText');
     const detectionStatus = document.getElementById('detectionStatus');
@@ -158,9 +159,12 @@
     let lastPredictions = [];
 
     // ── SIMPAN HASIL AI KE DATABASE ──────────────────────
-    async function simpanHasilAI(language, huruf, skorAI, prediksiAI) {
-        if (sudahDisimpan) return; // ← jangan simpan 2x
+    // FIX: tambah parameter durasiDetik, hitung dari waktu yang sudah terpakai
+    async function simpanHasilAI(language, huruf, skorAI, prediksiAI, durasiDetik) {
+        if (sudahDisimpan) return;
         sudahDisimpan = true;
+
+        console.log('DEBUG durasi:', durasiDetik, '| timeLeft:', timeLeft);
 
         try {
             const res = await fetch('/praktik/simpan', {
@@ -170,10 +174,11 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },
                 body: JSON.stringify({
-                    language:    language,
-                    huruf:       huruf,
-                    skor_ai:     skorAI,
-                    prediksi_ai: prediksiAI,
+                    language:         language,
+                    huruf:            huruf,
+                    skor_ai:          skorAI,
+                    prediksi_ai:      prediksiAI,
+                    duration_seconds: durasiDetik,   // ← DIKIRIM KE BACKEND
                 }),
             });
 
@@ -182,18 +187,24 @@
 
         } catch (err) {
             console.warn('⚠️ Gagal menyimpan hasil praktik:', err);
-            sudahDisimpan = false; // reset supaya bisa dicoba lagi
+            sudahDisimpan = false;
         }
+    }
+
+    // ── HITUNG DURASI YANG SUDAH TERPAKAI ────────────────
+    // 30 detik dikurangi sisa waktu = waktu yang sudah dipakai user
+    function getDurasiTerpakai() {
+        return DURASI_AWAL - timeLeft;
     }
 
     // ── TIMER ────────────────────────────────────────────
     function startTimer() {
         if (timerInterval) clearInterval(timerInterval);
 
-        timeLeft = 30;
+        timeLeft = DURASI_AWAL;
         if (timerText) {
-            timerText.innerText    = timeLeft;
-            timerText.style.color  = '#C07EB5';
+            timerText.innerText   = timeLeft;
+            timerText.style.color = '#C07EB5';
         }
 
         timerInterval = setInterval(() => {
@@ -201,7 +212,6 @@
 
             if (timerText) {
                 timerText.innerText   = timeLeft > 0 ? timeLeft : 0;
-                // Warna berubah merah saat < 10 detik
                 timerText.style.color = timeLeft <= 10 ? '#EF4444' : '#C07EB5';
             }
 
@@ -211,17 +221,16 @@
 
                 if (timerText) timerText.innerText = '0';
 
-                detectionStatus.innerText    = 'Waktu habis! Klik Ulangi untuk mencoba lagi.';
-                detectionStatus.style.color  = '#EF4444';
-                video.style.filter           = 'blur(4px)';
+                detectionStatus.innerText   = 'Waktu habis! Klik Ulangi untuk mencoba lagi.';
+                detectionStatus.style.color = '#EF4444';
+                video.style.filter          = 'blur(4px)';
 
-                // Tampilkan overlay
                 if (timerOverlay) {
                     timerOverlay.classList.remove('hidden');
                     timerOverlay.style.display = 'flex';
                 }
 
-                // Simpan ke database dengan skor 0
+                // Waktu habis = user pakai penuh 30 detik
                 const prediksiTerakhir = lastPredictions.length > 0
                     ? getMostFrequentPrediction(lastPredictions)
                     : null;
@@ -230,7 +239,8 @@
                     MODULE.toLowerCase(),
                     TARGET_HURUF,
                     0.0,
-                    prediksiTerakhir
+                    prediksiTerakhir,
+                    DURASI_AWAL  // ← 30 detik penuh
                 );
             }
         }, 1000);
@@ -335,12 +345,13 @@
             stopDetection();
             if (timerInterval) clearInterval(timerInterval);
 
-            // Simpan ke database — gesture berhasil
+            // FIX: kirim durasi yang sudah terpakai, bukan null
             simpanHasilAI(
                 MODULE.toLowerCase(),
                 TARGET_HURUF,
                 confidence,
-                predicted
+                predicted,
+                getDurasiTerpakai()  // ← misal berhasil di detik ke-8 → simpan 8
             );
 
         } else {
@@ -370,7 +381,7 @@
         detectionStatus.style.color = '';
 
         lastPredictions = [];
-        sudahDisimpan   = false; // ← reset guard supaya bisa simpan lagi
+        sudahDisimpan   = false;
 
         startTimer();
         startDetection();
