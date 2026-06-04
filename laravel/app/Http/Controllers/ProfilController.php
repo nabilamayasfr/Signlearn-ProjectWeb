@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use App\Models\QuizResult;
+use App\Models\PraktikResult;
 
 class ProfilController extends Controller
 {
@@ -18,57 +19,63 @@ class ProfilController extends Controller
         $user   = Auth::user();
         $userId = $user->id;
 
-        // ── Total latihan (berapa kali kuis diselesaikan) ──
-        $totalLatihan = QuizResult::where('user_id', $userId)->count();
+        // ── Total latihan (kuis + praktik) ──
+        $totalKuis    = QuizResult::where('user_id', $userId)->count();
+        $totalPraktik = PraktikResult::where('user_id', $userId)->count();
+        $totalLatihan = $totalKuis + $totalPraktik;
 
-        // ── Huruf terakhir yang dipelajari ──
-        // Ambil hasil kuis terbaru, lalu ambil jawaban terakhir yang BENAR
-        $hurufTerakhir = '-';
-        $hasilTerakhir = QuizResult::where('user_id', $userId)
-                                   ->latest()
-                                   ->first();
+        // ── Praktik terakhir (dari AI detection) ──
+        $praktikTerakhir = PraktikResult::where('user_id', $userId)
+                                        ->latest()
+                                        ->first();
 
-        if ($hasilTerakhir && $hasilTerakhir->answers_detail) {
-            // Cari jawaban terakhir yang benar dari kuis paling baru
-            $jawabanBenar = collect($hasilTerakhir->answers_detail)
-                ->filter(fn($a) => $a['is_correct'] === true)
-                ->last();
+        // Data huruf terakhir sekarang dari tabel praktik_results
+        $hurufTerakhir    = $praktikTerakhir?->huruf ?? '-';
+        $bahasaTerakhir   = $praktikTerakhir ? strtoupper($praktikTerakhir->language) : '-';
+        $skorTerakhir     = $praktikTerakhir ? (int) round($praktikTerakhir->skor_ai * 100) : null;
+        $tanggalTerakhir  = $praktikTerakhir
+                            ? $praktikTerakhir->created_at->locale('id')->isoFormat('D MMMM YYYY')
+                            : null;
 
-            if ($jawabanBenar) {
-                $hurufTerakhir = $jawabanBenar['correct_answer'];
-            }
-        }
+        // ── Progress: huruf yang pernah BERHASIL dipraktikkan ──
+        $hurufDikuasaiPraktik = PraktikResult::where('user_id', $userId)
+            ->where('status', 'berhasil')
+            ->distinct('huruf')
+            ->pluck('huruf')
+            ->map(fn($h) => strtoupper($h))
+            ->unique();
 
-        // ── Progress: berapa huruf unik yang sudah pernah dijawab benar ──
-        // Kita kumpulkan semua jawaban benar dari semua kuis user ini
-        $semuaHasil = QuizResult::where('user_id', $userId)->get();
-
-        $hurufDikuasai = collect();
-        foreach ($semuaHasil as $hasil) {
+        // Tambah dari kuis yang pernah benar
+        $semuaHasilKuis = QuizResult::where('user_id', $userId)->get();
+        $hurufBenarKuis = collect();
+        foreach ($semuaHasilKuis as $hasil) {
             if (!$hasil->answers_detail) continue;
             foreach ($hasil->answers_detail as $ans) {
                 if ($ans['is_correct'] === true) {
-                    // Tambahkan huruf ke koleksi (nanti di-unique)
-                    $hurufDikuasai->push(strtoupper($ans['correct_answer']));
+                    $hurufBenarKuis->push(strtoupper($ans['correct_answer']));
                 }
             }
         }
 
-        // Hitung huruf unik yang sudah pernah benar (dari 26 huruf)
-        $progressCount   = $hurufDikuasai->unique()->count();
+        // Gabungkan huruf dari praktik + kuis, ambil yang unik
+        $progressCount   = $hurufDikuasaiPraktik->merge($hurufBenarKuis)->unique()->count();
         $progressPercent = round(($progressCount / 26) * 100);
 
-        // ── Statistik tambahan per bahasa (untuk info detail) ──
+        // ── Statistik per bahasa ──
         $statPerBahasa = [
             'bisindo' => [
-                'total'        => QuizResult::where('user_id', $userId)->where('language', 'bisindo')->count(),
-                'rata_skor'    => round(QuizResult::where('user_id', $userId)->where('language', 'bisindo')->avg('score_percentage') ?? 0),
-                'skor_terbaik' => QuizResult::where('user_id', $userId)->where('language', 'bisindo')->max('score_percentage') ?? 0,
+                'total_kuis'        => QuizResult::where('user_id', $userId)->where('language', 'bisindo')->count(),
+                'total_praktik'     => PraktikResult::where('user_id', $userId)->where('language', 'bisindo')->count(),
+                'rata_skor_kuis'    => round(QuizResult::where('user_id', $userId)->where('language', 'bisindo')->avg('score_percentage') ?? 0),
+                'rata_skor_praktik' => round((PraktikResult::where('user_id', $userId)->where('language', 'bisindo')->avg('skor_ai') ?? 0) * 100),
+                'skor_terbaik'      => round((PraktikResult::where('user_id', $userId)->where('language', 'bisindo')->max('skor_ai') ?? 0) * 100),
             ],
             'sibi' => [
-                'total'        => QuizResult::where('user_id', $userId)->where('language', 'sibi')->count(),
-                'rata_skor'    => round(QuizResult::where('user_id', $userId)->where('language', 'sibi')->avg('score_percentage') ?? 0),
-                'skor_terbaik' => QuizResult::where('user_id', $userId)->where('language', 'sibi')->max('score_percentage') ?? 0,
+                'total_kuis'        => QuizResult::where('user_id', $userId)->where('language', 'sibi')->count(),
+                'total_praktik'     => PraktikResult::where('user_id', $userId)->where('language', 'sibi')->count(),
+                'rata_skor_kuis'    => round(QuizResult::where('user_id', $userId)->where('language', 'sibi')->avg('score_percentage') ?? 0),
+                'rata_skor_praktik' => round((PraktikResult::where('user_id', $userId)->where('language', 'sibi')->avg('skor_ai') ?? 0) * 100),
+                'skor_terbaik'      => round((PraktikResult::where('user_id', $userId)->where('language', 'sibi')->max('skor_ai') ?? 0) * 100),
             ],
         ];
 
@@ -76,6 +83,9 @@ class ProfilController extends Controller
             'user',
             'totalLatihan',
             'hurufTerakhir',
+            'bahasaTerakhir',
+            'skorTerakhir',
+            'tanggalTerakhir',
             'progressCount',
             'progressPercent',
             'statPerBahasa',

@@ -227,6 +227,43 @@
         window.location.href = `/pembelajaran/${currentModule.toLowerCase()}/${selectedLetter.toLowerCase()}`;
     }
 
+    // ── SIMPAN HASIL AI KE DATABASE ──────────────────────
+    // Fungsi ini dipanggil dari halaman huruf (view huruf.blade.php)
+    // setelah AI berhasil mendeteksi gesture dan menghasilkan skor.
+    //
+    // Parameter:
+    //   language    : 'bisindo' atau 'sibi'
+    //   huruf       : 'A' sampai 'Z'
+    //   skorAI      : angka 0.0 - 1.0 (confidence dari FastAPI)
+    //   prediksiAI  : huruf yang diprediksi AI (string 1 karakter)
+    //
+    async function simpanHasilAI(language, huruf, skorAI, prediksiAI) {
+        try {
+            const res = await fetch('/praktik/simpan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type':  'application/json',
+                    'X-CSRF-TOKEN':  document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({
+                    language:    language,
+                    huruf:       huruf,
+                    skor_ai:     skorAI,
+                    prediksi_ai: prediksiAI,
+                }),
+            });
+
+            const data = await res.json();
+            console.log('Hasil tersimpan:', data);
+            return data;
+
+        } catch (err) {
+            // Gagal simpan tidak mengganggu user — cukup log
+            console.warn('Gagal menyimpan hasil praktik:', err);
+            return null;
+        }
+    }
+
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
         toast.innerText = message;

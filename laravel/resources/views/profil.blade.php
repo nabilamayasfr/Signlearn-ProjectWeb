@@ -124,77 +124,100 @@
         </div>
 
         {{-- ===== STATISTIK ===== --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 text-center hover:shadow-md transition">
-                <p class="text-sm text-gray-500 font-medium">Total Latihan</p>
-                <p class="text-4xl font-extrabold text-gray-800 mt-1">{{ $totalLatihan ?? 0 }}</p>
-            </div>
-            <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 text-center hover:shadow-md transition">
-                <p class="text-sm text-gray-500 font-medium">Huruf Terakhir</p>
-                @if($hurufTerakhir !== '-')
-                 <a href="{{ route('latihan') }}"
-                        class="text-4xl font-extrabold text-gray-800 mt-1 hover:text-pink-500 transition block">
-                        {{ $hurufTerakhir }}
-                 </a>
-                <p class="text-xs text-gray-400 mt-1">Tap untuk latihan lagi</p>
-                @else
-                <p class="text-4xl font-extrabold text-gray-800 mt-1">-</p>
-            @endif
-            </div>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+
+        <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 text-center hover:shadow-md transition">
+            <p class="text-sm text-gray-500 font-medium">Total Aktivitas</p>
+            <p class="text-4xl font-extrabold text-gray-800 mt-1">{{ $totalLatihan }}</p>
+            <p class="text-xs text-gray-400 mt-1">{{ $statPerBahasa['bisindo']['total_kuis'] + $statPerBahasa['sibi']['total_kuis'] }} kuis · {{ $statPerBahasa['bisindo']['total_praktik'] + $statPerBahasa['sibi']['total_praktik'] }} praktik</p>
         </div>
 
+        <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 text-center hover:shadow-md transition">
+            <p class="text-sm text-gray-500 font-medium">Praktik Terakhir</p>
+
+            @if($hurufTerakhir !== '-')
+            <a href="{{ route('pembelajaran') }}"
+                class="text-4xl font-extrabold text-pink-500 mt-1 block hover:text-pink-600 transition">
+                {{ $hurufTerakhir }}
+            </a>
+            <p class="text-xs text-gray-400 mt-1">{{ $bahasaTerakhir }}</p>
+            @if($skorTerakhir !== null)
+                <p class="text-xs font-bold mt-0.5
+                        {{ $skorTerakhir >= 80 ? 'text-green-500' : 'text-yellow-500' }}">
+                Skor: {{ $skorTerakhir }}%
+                </p>
+            @endif
+            @if($tanggalTerakhir)
+                <p class="text-[0.68rem] text-gray-300 mt-0.5">{{ $tanggalTerakhir }}</p>
+            @endif
+            @else
+            <p class="text-4xl font-extrabold text-gray-300 mt-1">-</p>
+            <a href="{{ route('pembelajaran') }}"
+                class="text-xs text-pink-400 mt-1 block hover:underline">
+                Mulai praktik →
+            </a>
+            @endif
+        </div>
+
+        </div>
         {{-- ===== STATISTIK PER BAHASA ===== --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
 
-        {{-- BISINDO --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 hover:shadow-md transition">
-            <div class="flex items-center justify-between mb-3">
-            <h3 class="font-extrabold text-gray-800 text-sm">📊 BISINDO</h3>
-            <a href="{{ route('histori') }}"
-                class="text-xs text-pink-500 font-semibold hover:underline">
-                Lihat Histori →
-            </a>
+            {{-- BISINDO --}}
+            <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-extrabold text-gray-800 text-sm">BISINDO</h3>
+                    <a href="{{ route('histori') }}" class="text-xs text-pink-500 font-semibold hover:underline">
+                        Lihat Histori →
+                    </a>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-center">
+                    <div class="bg-pink-50 rounded-xl py-2 px-1">
+                        <p class="text-xl font-black text-pink-600">{{ $statPerBahasa['bisindo']['total_kuis'] }}</p>
+                        <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Total Kuis</p>
+                    </div>
+                    <div class="bg-pink-50 rounded-xl py-2 px-1">
+                        <p class="text-xl font-black text-pink-600">{{ $statPerBahasa['bisindo']['total_praktik'] }}</p>
+                        <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Total Praktik</p>
+                    </div>
+                    <div class="bg-pink-50 rounded-xl py-2 px-1">
+                        <p class="text-xl font-black text-pink-600">{{ $statPerBahasa['bisindo']['rata_skor_kuis'] }}%</p>
+                        <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Rata Kuis</p>
+                    </div>
+                    <div class="bg-pink-50 rounded-xl py-2 px-1">
+                        <p class="text-xl font-black text-pink-600">{{ $statPerBahasa['bisindo']['skor_terbaik'] }}%</p>
+                        <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Skor Terbaik</p>
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-3 gap-2 text-center">
-            <div class="bg-pink-50 rounded-xl py-2 px-1">
-                <p class="text-xl font-black text-pink-600">{{ $statPerBahasa['bisindo']['total'] }}</p>
-                <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Kuis</p>
-            </div>
-            <div class="bg-pink-50 rounded-xl py-2 px-1">
-                <p class="text-xl font-black text-pink-600">{{ $statPerBahasa['bisindo']['rata_skor'] }}%</p>
-                <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Rata-rata</p>
-            </div>
-            <div class="bg-pink-50 rounded-xl py-2 px-1">
-                <p class="text-xl font-black text-pink-600">{{ $statPerBahasa['bisindo']['skor_terbaik'] }}%</p>
-                <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Terbaik</p>
-            </div>
-            </div>
-        </div>
 
-        {{-- SIBI --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 hover:shadow-md transition">
-            <div class="flex items-center justify-between mb-3">
-            <h3 class="font-extrabold text-gray-800 text-sm">📊 SIBI</h3>
-            <a href="{{ route('histori') }}"
-                class="text-xs text-pink-500 font-semibold hover:underline">
-                Lihat Histori →
-            </a>
+            {{-- SIBI --}}
+            <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-extrabold text-gray-800 text-sm">SIBI</h3>
+                    <a href="{{ route('histori') }}" class="text-xs text-pink-500 font-semibold hover:underline">
+                        Lihat Histori →
+                    </a>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-center">
+                    <div class="bg-blue-50 rounded-xl py-2 px-1">
+                        <p class="text-xl font-black text-blue-500">{{ $statPerBahasa['sibi']['total_kuis'] }}</p>
+                        <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Total Kuis</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-xl py-2 px-1">
+                        <p class="text-xl font-black text-blue-500">{{ $statPerBahasa['sibi']['total_praktik'] }}</p>
+                        <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Total Praktik</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-xl py-2 px-1">
+                        <p class="text-xl font-black text-blue-500">{{ $statPerBahasa['sibi']['rata_skor_kuis'] }}%</p>
+                        <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Rata Kuis</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-xl py-2 px-1">
+                        <p class="text-xl font-black text-blue-500">{{ $statPerBahasa['sibi']['skor_terbaik'] }}%</p>
+                        <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Skor Terbaik</p>
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-3 gap-2 text-center">
-            <div class="bg-blue-50 rounded-xl py-2 px-1">
-                <p class="text-xl font-black text-blue-500">{{ $statPerBahasa['sibi']['total'] }}</p>
-                <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Kuis</p>
-            </div>
-            <div class="bg-blue-50 rounded-xl py-2 px-1">
-                <p class="text-xl font-black text-blue-500">{{ $statPerBahasa['sibi']['rata_skor'] }}%</p>
-                <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Rata-rata</p>
-            </div>
-            <div class="bg-blue-50 rounded-xl py-2 px-1">
-                <p class="text-xl font-black text-blue-500">{{ $statPerBahasa['sibi']['skor_terbaik'] }}%</p>
-                <p class="text-[0.65rem] text-gray-400 font-medium mt-0.5">Terbaik</p>
-            </div>
-            </div>
-        </div>
 
         </div>
 

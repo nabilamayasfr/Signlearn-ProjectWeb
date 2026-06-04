@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\QuizResult;
 use App\Models\QuizQuestion;
+use App\Models\PraktikResult;
 use Illuminate\Support\Facades\Auth;
 
 class HistoriController extends Controller
@@ -13,65 +14,82 @@ class HistoriController extends Controller
 
     public function index()
     {
-        // ← $userId WAJIB di baris pertama
         $userId = Auth::id();
 
-        // Ambil dengan pagination
+        // ══ KUIS: ambil dengan pagination ══
         $hasilKuis = QuizResult::where('user_id', $userId)
                                ->latest()
                                ->paginate(self::PER_PAGE);
 
-        // ── FIX N+1: Kumpulkan semua question_id dari semua hasil sekaligus ──
-        // Daripada query ke quiz_questions satu per satu per soal,
-        // kita ambil semua yang dibutuhkan dalam SATU query
+        // Fix N+1 untuk soal kuis
         $semuaQuestionIds = $hasilKuis->getCollection()
-            ->flatMap(function ($result) {
-                if (!$result->answers_detail) return [];
-                return collect($result->answers_detail)
-                    ->pluck('question_id')
-                    ->filter();
-            })
-            ->unique()
-            ->values()
-            ->toArray();
+            ->flatMap(fn($r) => $r->answers_detail
+                ? collect($r->answers_detail)->pluck('question_id')->filter()
+                : [])
+            ->unique()->values()->toArray();
 
-        // Satu query untuk semua soal yang dibutuhkan, simpan ke array indexed by id
         $soalCache = QuizQuestion::whereIn('id', $semuaQuestionIds)
-                                 ->get()
-                                 ->keyBy('id');  // ['1' => QuizQuestion, '2' => QuizQuestion, ...]
+                                 ->get()->keyBy('id');
 
-        // Map ke format Blade, dengan soalCache dikirim masuk
-        $riwayat = $hasilKuis->getCollection()->map(function ($result) use ($soalCache) {
-            return $this->formatHasilKuis($result, $soalCache);
-        });
+        $riwayatKuis = $hasilKuis->getCollection()->map(
+            fn($r) => $this->formatHasilKuis($r, $soalCache)
+        );
 
-        // Statistik dari semua data user (bukan hanya halaman ini)
-        $allResults = QuizResult::where('user_id', $userId)->get();
+        // ══ PRAKTIK: ambil semua (sudah ringan, hanya 1 baris per sesi) ══
+        $hasilPraktik  = PraktikResult::where('user_id', $userId)
+                                      ->latest()
+                                      ->get();
+
+        $riwayatPraktik = $hasilPraktik->map(
+            fn($r) => $this->formatHasilPraktik($r)
+        );
+
+        // ══ GABUNGKAN dan urutkan dari terbaru ══
+        $riwayat = $riwayatKuis->concat($riwayatPraktik)
+                               ->sortByDesc('created_at_raw')
+                               ->values();
+
+        // ══ STATISTIK ══
+        $allKuis    = QuizResult::where('user_id', $userId)->get();
+        $allPraktik = PraktikResult::where('user_id', $userId)->get();
+
         $stats = [
-            'total_kuis'   => $allResults->count(),
-            'rata_skor'    => $allResults->count() > 0
-                              ? round($allResults->avg('score_percentage'))
-                              : 0,
-            'skor_terbaik' => $allResults->count() > 0
-                              ? $allResults->max('score_percentage')
-                              : 0,
+            'total_kuis'        => $allKuis->count(),
+            'rata_skor'         => $allKuis->count() > 0
+                                   ? round($allKuis->avg('score_percentage')) : 0,
+            'skor_terbaik'      => $allKuis->count() > 0
+                                   ? $allKuis->max('score_percentage') : 0,
+            'total_praktik'     => $allPraktik->count(),
+            'rata_skor_praktik' => $allPraktik->count() > 0
+                                   ? round($allPraktik->avg('skor_ai') * 100) : 0,
+            'praktik_berhasil'  => $allPraktik->where('status', 'berhasil')->count(),
         ];
 
-        // Data grafik 30 hari terakhir
-        $grafikData = QuizResult::where('user_id', $userId)
+        // ══ GRAFIK: gabungkan kuis + praktik 30 hari terakhir ══
+        $grafikKuis = QuizResult::where('user_id', $userId)
             ->where('created_at', '>=', now()->subDays(30))
-            ->latest()
-            ->get()
+            ->latest()->get()
             ->map(fn($r) => [
                 'tanggal' => $r->created_at->format('d/m'),
                 'skor'    => $r->score_percentage,
-                'level'   => ucfirst($r->level),
-                'bahasa'  => strtoupper($r->language),
-            ])
-            ->reverse()
-            ->values();
+                'tipe'    => 'Kuis',
+                'label'   => strtoupper($r->language),
+            ]);
 
-        // Kalau AJAX (load more)
+        $grafikPraktik = PraktikResult::where('user_id', $userId)
+            ->where('created_at', '>=', now()->subDays(30))
+            ->latest()->get()
+            ->map(fn($r) => [
+                'tanggal' => $r->created_at->format('d/m'),
+                'skor'    => (int) round($r->skor_ai * 100),
+                'tipe'    => 'Praktik',
+                'label'   => strtoupper($r->language) . ' ' . $r->huruf,
+            ]);
+
+        $grafikData = $grafikKuis->concat($grafikPraktik)
+                                 ->sortBy(fn($d) => $d['tanggal'])
+                                 ->values();
+
         if (request()->ajax()) {
             return response()->json([
                 'html'      => view('partials.riwayat-items', compact('riwayat'))->render(),
@@ -87,12 +105,11 @@ class HistoriController extends Controller
         ]);
     }
 
-    // ── Terima $soalCache sebagai parameter, bukan query lagi ──
+    // ── Format data kuis untuk tampilan ──
     private function formatHasilKuis(QuizResult $result, $soalCache = null): array
     {
         $bahasa     = strtoupper($result->language);
         $levelLabel = ucfirst($result->level);
-        $tanggal    = $result->created_at->locale('id')->isoFormat('D MMMM YYYY, HH:mm');
         $benar      = $result->correct_answers;
         $salah      = $result->total_questions - $benar;
 
@@ -112,32 +129,77 @@ class HistoriController extends Controller
         }
 
         return [
-            'tipe'        => 'kuis',
-            'judul'       => 'Kuis ' . $bahasa,
-            'subjudul'    => 'Level ' . $levelLabel . ' · ' . $result->created_at->locale('id')->isoFormat('D MMM YYYY'),
-            'skor'        => $result->score_percentage,
-            'benar'       => $benar,
-            'salah'       => $salah,
-            'total_soal'  => $result->total_questions,
-            'tanggal'     => $tanggal,
-            'durasi'      => isset($result->duration_seconds) && $result->duration_seconds
-                             ? gmdate('i:s', $result->duration_seconds) . ' menit'
-                             : '—',
-            'kategori'    => $bahasa,
-            'level'       => $levelLabel,
-            'soal_detail' => $soalDetail,
+            'tipe'           => 'kuis',
+            'judul'          => 'Kuis ' . $bahasa,
+            'subjudul'       => 'Level ' . $levelLabel . ' · ' . $result->created_at->locale('id')->isoFormat('D MMM YYYY'),
+            'skor'           => $result->score_percentage,
+            'benar'          => $benar,
+            'salah'          => $salah,
+            'total_soal'     => $result->total_questions,
+            'tanggal'        => $result->created_at->locale('id')->isoFormat('D MMMM YYYY, HH:mm'),
+            // FIX: format durasi lebih natural, tanpa "menit" redundan di belakang mm:ss
+            'durasi'         => $this->formatDurasi($result->duration_seconds ?? null),
+            'kategori'       => $bahasa,
+            'level'          => $levelLabel,
+            'soal_detail'    => $soalDetail,
+            'created_at_raw' => $result->created_at->timestamp,
         ];
     }
 
-    // ── Ambil pilihan dari cache, bukan query ──
+    // ── Format data praktik untuk tampilan ──
+    private function formatHasilPraktik(PraktikResult $result): array
+    {
+        $bahasa      = strtoupper($result->language);
+        $skorPersen  = (int) round($result->skor_ai * 100);
+        $statusLabel = $result->status === 'berhasil' ? 'Berhasil' : 'Perlu Latihan';
+        $statusEmoji = $result->status === 'berhasil' ? '✅' : '⚠️';
+
+        return [
+            'tipe'           => 'praktik',
+            'judul'          => 'Praktik ' . $bahasa . ' — Huruf ' . $result->huruf,
+            'subjudul'       => $statusEmoji . ' ' . $statusLabel . ' · ' . $result->created_at->locale('id')->isoFormat('D MMM YYYY'),
+            'skor'           => $skorPersen,
+            'huruf'          => $result->huruf,
+            'bahasa'         => $bahasa,
+            'status'         => $result->status,
+            'status_label'   => $statusLabel,
+            'status_emoji'   => $statusEmoji,
+            'prediksi_ai'    => $result->prediksi_ai,
+            'tanggal'        => $result->created_at->locale('id')->isoFormat('D MMMM YYYY, HH:mm'),
+            // FIX: tambahkan durasi — coba kolom duration_seconds, fallback ke null
+            'durasi'         => $this->formatDurasi($result->duration_seconds ?? null),
+            'created_at_raw' => $result->created_at->timestamp,
+        ];
+    }
+
+    /**
+     * Format detik jadi string yang mudah dibaca.
+     * Contoh: 90 → "1 menit 30 detik", 45 → "45 detik", null → "Tidak tercatat"
+     */
+    private function formatDurasi(?int $detik): string
+    {
+        if (!$detik || $detik <= 0) {
+            return 'Tidak tercatat';
+        }
+
+        $menit = intdiv($detik, 60);
+        $sisa  = $detik % 60;
+
+        if ($menit > 0 && $sisa > 0) {
+            return $menit . ' menit ' . $sisa . ' detik';
+        } elseif ($menit > 0) {
+            return $menit . ' menit';
+        } else {
+            return $sisa . ' detik';
+        }
+    }
+
     private function getPilihanFromCache(array $ans, $soalCache = null): array
     {
         if ($soalCache && !empty($ans['question_id'])) {
             $soal = $soalCache->get($ans['question_id']);
             if ($soal) return $soal->options;
         }
-
-        // Fallback kalau soal sudah dihapus atau cache kosong
         $pilihan = [$ans['correct_answer'] ?? ''];
         if (isset($ans['user_answer']) && $ans['user_answer'] !== $ans['correct_answer']) {
             $pilihan[] = $ans['user_answer'];

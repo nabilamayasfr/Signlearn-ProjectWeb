@@ -10,6 +10,8 @@ use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\LatihanController;
 use App\Http\Controllers\Admin\AdminKuisController;
+use App\Http\Controllers\PraktikController;
+
 
 Route::get('/', function () {
     return view('landing');
@@ -35,8 +37,6 @@ Route::get('/latihan', function () {
 Route::get('/histori', [HistoriController::class, 'index'])
      ->name('histori')
      ->middleware('auth'); // wajib login untuk lihat histori
-
-Route::get('/pembelajaran/{modul}/{huruf}/detail', [PembelajaranController::class, 'showDetail'])->name('pembelajaran.detail');
 
 Route::get('/pembelajaran/sibi', function () {
     return view('pembelajaran.sibi');
@@ -94,3 +94,11 @@ Route::get('/latihan', [LatihanController::class, 'index'])->name('latihan');
 
 Route::get('/latihan/soal', [LatihanController::class, 'getSoal'])->name('latihan.soal');
 Route::post('/latihan/simpan-hasil', [LatihanController::class, 'simpanHasil'])->name('latihan.simpan');
+
+Route::post('/praktik/simpan', [PraktikController::class, 'simpan'])
+     ->name('praktik.simpan')
+     ->middleware('auth');
+
+Route::get('/praktik/riwayat/{modul}/{huruf}', [PraktikController::class, 'riwayatHuruf'])
+     ->name('praktik.riwayat')
+     ->middleware('auth');
