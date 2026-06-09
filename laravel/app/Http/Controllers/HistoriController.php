@@ -152,18 +152,16 @@ class HistoriController extends Controller
         $bahasa      = strtoupper($result->language);
         $skorPersen  = (int) round($result->skor_ai * 100);
         $statusLabel = $result->status === 'berhasil' ? 'Berhasil' : 'Perlu Latihan';
-        $statusEmoji = $result->status === 'berhasil' ? '✅' : '⚠️';
 
         return [
             'tipe'           => 'praktik',
             'judul'          => 'Praktik ' . $bahasa . ' — Huruf ' . $result->huruf,
-            'subjudul'       => $statusEmoji . ' ' . $statusLabel . ' · ' . $result->created_at->locale('id')->isoFormat('D MMM YYYY'),
+            'subjudul'       => $statusLabel . ' · ' . $result->created_at->locale('id')->isoFormat('D MMM YYYY'),
             'skor'           => $skorPersen,
             'huruf'          => $result->huruf,
             'bahasa'         => $bahasa,
             'status'         => $result->status,
             'status_label'   => $statusLabel,
-            'status_emoji'   => $statusEmoji,
             'prediksi_ai'    => $result->prediksi_ai,
             'tanggal'        => $result->created_at->locale('id')->isoFormat('D MMMM YYYY, HH:mm'),
             // FIX: tambahkan durasi — coba kolom duration_seconds, fallback ke null
