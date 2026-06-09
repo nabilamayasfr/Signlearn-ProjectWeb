@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Modul;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -52,7 +52,25 @@ class AdminController extends Controller
         $thumbnailPath = null;
 
         if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('modul-thumbnails', 'public');
+            $file = $request->file('thumbnail');
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            // Tentukan folder berdasarkan modul
+            $folder = strtolower($request->modul) === 'bisindo' ? 'bisindo' : 'sibi';
+
+            // Simpan langsung ke folder public/assets/pembelajaran
+            $destinationPath = public_path("assets/pembelajaran/{$folder}");
+
+            // Buat folder jika belum ada
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+
+            // Pindahkan file ke public
+            $file->move($destinationPath, $filename);
+
+            // Simpan path relatif dari folder public
+            $thumbnailPath = "assets/pembelajaran/{$folder}/{$filename}";
         }
 
         Modul::create([
@@ -87,11 +105,26 @@ class AdminController extends Controller
         $thumbnailPath = $modulData->thumbnail;
 
         if ($request->hasFile('thumbnail')) {
-            if ($modulData->thumbnail && Storage::disk('public')->exists($modulData->thumbnail)) {
-                Storage::disk('public')->delete($modulData->thumbnail);
+            // Hapus file lama dari public
+            if ($modulData->thumbnail && File::exists(public_path($modulData->thumbnail))) {
+                File::delete(public_path($modulData->thumbnail));
             }
 
-            $thumbnailPath = $request->file('thumbnail')->store('modul-thumbnails', 'public');
+            $file = $request->file('thumbnail');
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            // Tentukan folder berdasarkan modul (gunakan modul dari request)
+            $folder = strtolower($request->modul) === 'bisindo' ? 'bisindo' : 'sibi';
+
+            // Simpan langsung ke folder public
+            $destinationPath = public_path("assets/pembelajaran/{$folder}");
+
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+
+            $file->move($destinationPath, $filename);
+            $thumbnailPath = "assets/pembelajaran/{$folder}/{$filename}";
         }
 
         $modulData->update([

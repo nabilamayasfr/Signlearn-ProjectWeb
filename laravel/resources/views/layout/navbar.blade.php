@@ -170,7 +170,7 @@
 <header class="beranda-nav">
   <!-- Logo -->
   <a href="{{ route('beranda') }}">
-    <img src="{{ asset('assets/logo.png') }}" style="width:120px;" alt="SignLearn">
+    <img src="{{ asset('assets/tulisan.png') }}" style="width:120px;" alt="SignLearn">
   </a>
 
   <!-- Desktop Nav -->

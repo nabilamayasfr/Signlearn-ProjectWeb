@@ -54,8 +54,8 @@
                 Pembelajaran
                 <span class="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C82D85] rounded transition-all duration-200 group-hover:w-full"></span>
             </a>
-            <a href="{{ route('histori') }}" class="relative pb-[3px] hover:text-[#C82D85] group">
-                History
+            <a href="{{ route('login') }}" class="relative pb-[3px] hover:text-[#C82D85] group">
+                Latihan
                 <span class="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C82D85] rounded transition-all duration-200 group-hover:w-full"></span>
             </a>
         </nav>

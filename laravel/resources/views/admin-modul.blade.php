@@ -100,9 +100,9 @@
 
                 <div class="thumbnail-wrap relative h-20 flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 overflow-hidden">
                     @if($item->thumbnail)
-                        <img class="thumb-img absolute inset-0 w-full h-full object-cover"
-                             src="{{ asset('storage/' . $item->thumbnail) }}"
-                             alt="Thumbnail {{ $item->huruf }}">
+    <img class="thumb-img absolute inset-0 w-full h-full object-cover"
+         src="{{ asset($item->thumbnail) }}"
+         alt="Thumbnail {{ $item->huruf }}">
                     @else
                         <div class="thumb-placeholder flex flex-col items-center justify-center w-full h-full">
                             <span class="text-xs text-gray-400 font-medium">No Image</span>
@@ -160,7 +160,7 @@
                 <div class="thumbnail-wrap relative h-20 flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 overflow-hidden">
                     @if($item->thumbnail)
                         <img class="thumb-img absolute inset-0 w-full h-full object-cover"
-                             src="{{ asset('storage/' . $item->thumbnail) }}"
+                             src="{{ asset($item->thumbnail) }}"
                              alt="Thumbnail {{ $item->huruf }}">
                     @else
                         <div class="thumb-placeholder flex flex-col items-center justify-center w-full h-full">

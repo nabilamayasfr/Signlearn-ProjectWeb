@@ -22,21 +22,17 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::get('/beranda', function () {
     return view('beranda');
 })->name('beranda');
 
-Route::get('/pembelajaran', [PembelajaranController::class, 'index'])
-    ->name('pembelajaran');
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
 
-Route::get('/latihan', function () {
-    return view('latihan');
-})->name('latihan');
-
-
-Route::get('/histori', [HistoriController::class, 'index'])
-     ->name('histori')
-     ->middleware('auth'); // wajib login untuk lihat histori
+Route::get('/pembelajaran', [PembelajaranController::class, 'index'])->name('pembelajaran');
+Route::get('/pembelajaran.index', [PembelajaranController::class, 'index'])->name('pembelajaran.index');
 
 Route::get('/pembelajaran/sibi', function () {
     return view('pembelajaran.sibi');
@@ -46,54 +42,27 @@ Route::get('/pembelajaran/bisindo', function () {
     return view('pembelajaran.bisindo');
 })->name('pembelajaran.bisindo');
 
-Route::get('/faq', function () {
-    return view('faq');
-})->name('faq');
+// ⚠️ Progress HARUS di atas /{modul}/{huruf}
+Route::get('/pembelajaran/progress',         [PembelajaranController::class, 'getProgress'])->middleware('auth');
+Route::post('/pembelajaran/progress/simpan', [PembelajaranController::class, 'simpanProgress'])->middleware('auth');
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profil',  [ProfilController::class, 'index'])->name('profil');
-    Route::put('/profil',  [ProfilController::class, 'update'])->name('profile.update');
-});
-
-Route::prefix('admin')->name('admin.')->group(function () {
-
-    // Halaman
-    Route::get('/kuis', [AdminKuisController::class, 'index'])->name('kuis');
-
-    // API endpoints (dipanggil JavaScript)
-    Route::get('/kuis/data',      [AdminKuisController::class, 'getData']);
-    Route::post('/soal',          [AdminKuisController::class, 'tambahSoal']);
-    Route::put('/soal/{id}',      [AdminKuisController::class, 'editSoal']);
-    Route::delete('/soal/{id}',   [AdminKuisController::class, 'hapusSoal']);
-});
-
-Route::get('/pembelajaran.index', [PembelajaranController::class, 'index'])->name('pembelajaran.index');
+// Ini harus SETELAH route progress
 Route::get('/pembelajaran/{modul}/{huruf}', [PembelajaranController::class, 'showHuruf'])->name('pembelajaran.huruf');
 
+Route::get('/histori', [HistoriController::class, 'index'])
+     ->name('histori')
+     ->middleware('auth');
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
-    Route::get('/modul', [AdminController::class, 'modul'])->name('modul');
-    Route::post('/modul', [AdminController::class, 'storeModul'])->name('modul.store');
-    Route::put('/modul/{id}', [AdminController::class, 'updateModul'])->name('modul.update');
-    Route::get('/kuis', [AdminController::class, 'kuis'])->name('kuis');
+Route::middleware('auth')->group(function () {
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profile.update');
 });
 
-
-Route::get('/admin/login', function () {
-    return view('auth.admin');  // merujuk ke resources/views/auth/admin.blade.php
-})->name('admin.login');
-
-Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
-
-Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
-
 Route::get('/latihan', [LatihanController::class, 'index'])->name('latihan');
-
 Route::get('/latihan/soal', [LatihanController::class, 'getSoal'])->name('latihan.soal');
 Route::post('/latihan/simpan-hasil', [LatihanController::class, 'simpanHasil'])->name('latihan.simpan');
+
+Route::get('/praktik/{modul}/{huruf}', [PraktikController::class, 'show'])->name('praktik.huruf');
 
 Route::post('/praktik/simpan', [PraktikController::class, 'simpan'])
      ->name('praktik.simpan')
@@ -102,3 +71,26 @@ Route::post('/praktik/simpan', [PraktikController::class, 'simpan'])
 Route::get('/praktik/riwayat/{modul}/{huruf}', [PraktikController::class, 'riwayatHuruf'])
      ->name('praktik.riwayat')
      ->middleware('auth');
+
+// ─── ADMIN ───────────────────────────────────────────────────────────────────
+
+Route::get('/admin/login', function () {
+    return view('auth.admin');
+})->name('admin.login');
+
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/pengguna',  [AdminController::class, 'pengguna'])->name('pengguna');
+    Route::get('/modul',     [AdminController::class, 'modul'])->name('modul');
+    Route::post('/modul',    [AdminController::class, 'storeModul'])->name('modul.store');
+    Route::put('/modul/{id}',[AdminController::class, 'updateModul'])->name('modul.update');
+
+    // Kuis
+    Route::get('/kuis',         [AdminKuisController::class, 'index'])->name('kuis');
+    Route::get('/kuis/data',    [AdminKuisController::class, 'getData']);
+    Route::post('/soal',        [AdminKuisController::class, 'tambahSoal']);
+    Route::put('/soal/{id}',    [AdminKuisController::class, 'editSoal']);
+    Route::delete('/soal/{id}', [AdminKuisController::class, 'hapusSoal']);
+});

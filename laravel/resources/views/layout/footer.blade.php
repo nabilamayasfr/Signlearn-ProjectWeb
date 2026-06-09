@@ -173,7 +173,7 @@
     {{-- Brand --}}
     <div class="footer-brand">
       <div class="footer-brand-top">
-        <img src="{{ asset('assets/logo.png') }}" alt="SignLearn Logo">
+        <img src="{{ asset('assets/tulisan.png') }}" alt="SignLearn Logo">
       </div>
       <p class="footer-brand-desc">Belajar Bahasa Isyarat dengan AI Secara Mandiri</p>
     </div>

@@ -21,12 +21,16 @@
         {{-- PROGRESS BELAJAR --}}
         <div class="bg-white rounded-2xl shadow-sm p-5 mb-6 border border-pink-100">
             <h3 class="font-bold text-gray-700 mb-1">Kemajuan Belajar</h3>
-            <p class="text-gray-500 text-sm mb-3">Kamu sudah menguasai <span id="progressCountText" class="font-semibold text-gray-700">12/26 huruf (46%)</span></p>
+            <p class="text-gray-500 text-sm mb-3">
+                Kamu sudah menguasai
+                <span id="progressCountText" class="font-semibold text-gray-700">0/26 huruf (0%)</span>
+            </p>
             <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
-                <div id="progressFillBar" class="h-3 rounded-full transition-all duration-500"
-                    style="width: 46%; background: linear-gradient(90deg, #F472B6, #DB2777);"></div>
+                <div id="progressFillBar"
+                     class="h-3 rounded-full transition-all duration-500"
+                     style="width: 0%; background: linear-gradient(90deg, #F472B6, #DB2777);"></div>
             </div>
-            <p class="text-xs text-gray-400 mt-1" id="progressLabel">(46% filled)</p>
+            <p class="text-xs text-gray-400 mt-1" id="progressLabel">(0% selesai)</p>
         </div>
 
         {{-- PILIH MODUL --}}
@@ -34,37 +38,35 @@
         <div class="grid grid-cols-2 gap-4 mb-6">
 
             {{-- BISINDO --}}
-            <div id="moduleBisindo" onclick="setActiveModule('BISINDO')"
-                class="bg-white rounded-2xl shadow-sm border-2 border-pink-400 p-4 cursor-pointer transition-all duration-300">
+            <div id="moduleBisindo"
+                 onclick="setActiveModule('BISINDO')"
+                 class="bg-white rounded-2xl shadow-sm border-2 border-pink-400 p-4 cursor-pointer transition-all duration-300">
                 <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div>
-                            <h3 class="text-base font-extrabold text-gray-800">BISINDO</h3>
-                            <p class="text-gray-400 text-xs">Bahasa isyarat Indonesia</p>
-                        </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-gray-800">BISINDO</h3>
+                        <p class="text-gray-400 text-xs">Bahasa isyarat Indonesia</p>
                     </div>
                     <button id="btnBisindo"
-                        onclick="event.stopPropagation(); setActiveModule('BISINDO')"
-                        class="text-xs font-bold px-4 py-2 rounded-xl transition"
-                        style="background-color: #D96FAD; color: white;">
+                            onclick="event.stopPropagation(); setActiveModule('BISINDO')"
+                            class="text-xs font-bold px-4 py-2 rounded-xl transition"
+                            style="background-color: #D96FAD; color: white;">
                         Aktif
                     </button>
                 </div>
             </div>
 
             {{-- SIBI --}}
-            <div id="moduleSibi" onclick="setActiveModule('SIBI')"
-                class="bg-white rounded-2xl shadow-sm border-2 border-gray-200 p-4 cursor-pointer transition-all duration-300">
+            <div id="moduleSibi"
+                 onclick="setActiveModule('SIBI')"
+                 class="bg-white rounded-2xl shadow-sm border-2 border-gray-200 p-4 cursor-pointer transition-all duration-300">
                 <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div>
-                            <h3 class="text-base font-extrabold text-gray-800">SIBI</h3>
-                            <p class="text-gray-400 text-xs">Sistem isyarat Bahasa Indonesia</p>
-                        </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-gray-800">SIBI</h3>
+                        <p class="text-gray-400 text-xs">Sistem isyarat Bahasa Indonesia</p>
                     </div>
                     <button id="btnSibi"
-                        onclick="event.stopPropagation(); setActiveModule('SIBI')"
-                        class="text-xs font-bold px-4 py-2 rounded-xl transition bg-gray-100 text-gray-400">
+                            onclick="event.stopPropagation(); setActiveModule('SIBI')"
+                            class="text-xs font-bold px-4 py-2 rounded-xl transition bg-gray-100 text-gray-400">
                         Mulai
                     </button>
                 </div>
@@ -76,18 +78,24 @@
             <div class="flex items-center gap-2 mb-4">
                 <h3 class="text-lg font-extrabold text-gray-800">Huruf A-Z</h3>
                 <span id="activeModuleBadge"
-                    class="text-xs font-bold px-3 py-1 rounded-full text-white"
-                    style="background-color: #D96FAD;">BISINDO</span>
+                      class="text-xs font-bold px-3 py-1 rounded-full text-white"
+                      style="background-color: #D96FAD;">BISINDO</span>
             </div>
-
+            <div id="gridLoading" class="text-center py-6 text-gray-400 text-sm">Memuat data...</div>
             <div class="grid grid-cols-8 gap-2" id="alphabetGrid"></div>
         </div>
     </div>
 </div>
 
-<div id="letterModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[9999] transition-all duration-300" style="display: none;">
-    <div class="bg-white rounded-3xl max-w-md w-full mx-6 p-6 shadow-2xl transform transition-all relative my-8">
-        <button id="closeModalBtn" class="absolute top-4 right-5 text-gray-400 hover:text-gray-600 text-3xl leading-none z-10">&times;</button>
+{{-- MODAL --}}
+<div id="letterModal"
+     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[9999]"
+     style="display: none;">
+    <div class="bg-white rounded-3xl max-w-md w-full mx-6 p-6 shadow-2xl relative my-8">
+        <button id="closeModalBtn"
+                class="absolute top-4 right-5 text-gray-400 hover:text-gray-600 text-3xl leading-none z-10">
+            &times;
+        </button>
         <div class="text-center mb-2">
             <h3 class="text-2xl font-extrabold text-gray-800">
                 Belajar Huruf <span id="modalLetter" class="text-pink-500">A</span>
@@ -96,51 +104,107 @@
         <div class="flex justify-center my-5">
             <div class="bg-[#FEF2F8] rounded-2xl p-6 border border-pink-100 w-full flex flex-col items-center">
                 <div class="text-7xl font-black text-pink-400 mb-2" id="modalLetterBig">A</div>
-                <p class="text-gray-500 text-sm mt-4 text-center" id="modalDescription">
-                    Pelajari bahasa isyarat untuk huruf <span id="modalLetterDesc">A</span> dalam modul <span id="modalModuleDesc">BISINDO</span>
-                </p>
+                <p class="text-gray-500 text-sm mt-4 text-center" id="modalDescription"></p>
             </div>
         </div>
         <div class="flex flex-col gap-3 mt-2">
-            <button id="viewModuleBtn" class="w-full py-3 rounded-xl font-bold text-pink-600 bg-pink-50 border border-pink-200 hover:bg-pink-100 transition flex items-center justify-center gap-2">
-                <span></span> Lihat Modul
+            <button id="viewModuleBtn"
+                    class="w-full py-3 rounded-xl font-bold text-pink-600 bg-pink-50 border border-pink-200 hover:bg-pink-100 transition flex items-center justify-center gap-2">
+                Lihat Modul
             </button>
-            <button id="practiceNowBtn" class="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 transition shadow-md flex items-center justify-center gap-2">
-                <span></span> Praktik Langsung
+            <button id="practiceNowBtn"
+                    class="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 transition shadow-md flex items-center justify-center gap-2">
+                Praktik Langsung
             </button>
-            <button id="markMasteredModalBtn" class="w-full py-3 rounded-xl font-bold border-2 transition flex items-center justify-center gap-2 border-green-400 text-green-700 bg-green-50 hover:bg-green-100">
-                <span></span> Sudah Dikuasai
+            <button id="markMasteredModalBtn"
+                    class="w-full py-3 rounded-xl font-bold border-2 transition flex items-center justify-center gap-2 border-green-400 text-green-700 bg-green-50 hover:bg-green-100">
+                ✓ Sudah Dikuasai
             </button>
         </div>
     </div>
 </div>
+
 @push('scripts')
 <script>
     const allLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-    let currentModule = 'BISINDO';
-    let masteredLetters = [];
-    let selectedLetter = null;
+    let currentModule  = 'BISINDO';
+    let masteredLetters = [];   // diisi dari DB saat loadProgress()
+    let selectedLetter  = null;
+    let isSaving        = false;
 
-    function loadProgress() {
-        const stored = localStorage.getItem('signlearn_mastered');
-        masteredLetters = stored ? JSON.parse(stored) : allLetters.slice(0, 12);
+    // ─── LOAD PROGRESS DARI DATABASE ───────────────────────────────────────────
+    async function loadProgress() {
+        document.getElementById('gridLoading').style.display = 'block';
+        document.getElementById('alphabetGrid').innerHTML    = '';
+
+        try {
+            const res  = await fetch(`/pembelajaran/progress?module=${currentModule}`, {
+                headers: { 'Accept': 'application/json' }
+            });
+            const data = await res.json();
+            // Ekspektasi response: { mastered: ['A','B','C', ...] }
+            masteredLetters = Array.isArray(data.mastered) ? data.mastered : [];
+        } catch (err) {
+            console.warn('Gagal load progress dari server, fallback ke localStorage:', err);
+            // Fallback: gunakan localStorage agar tetap bisa dipakai offline
+            const stored    = localStorage.getItem(`signlearn_mastered_${currentModule}`);
+            masteredLetters = stored ? JSON.parse(stored) : [];
+        }
+
+        document.getElementById('gridLoading').style.display = 'none';
         updateProgressUI();
     }
 
+    // ─── UPDATE UI PROGRESS BAR ─────────────────────────────────────────────────
     function updateProgressUI() {
-        const count = masteredLetters.length;
+        const count   = masteredLetters.length;
         const percent = Math.floor((count / 26) * 100);
         document.getElementById('progressCountText').innerHTML = `${count}/26 huruf (${percent}%)`;
         document.getElementById('progressFillBar').style.width = `${percent}%`;
-        document.getElementById('progressLabel').innerHTML = `(${percent}% filled)`;
+        document.getElementById('progressLabel').innerHTML     = `(${percent}% selesai)`;
         renderAlphabetGrid();
     }
 
-    function saveMastered() {
-        localStorage.setItem('signlearn_mastered', JSON.stringify(masteredLetters));
+    // ─── SIMPAN KE DATABASE ─────────────────────────────────────────────────────
+    async function saveMastered(letter) {
+        if (isSaving) return;
+        isSaving = true;
+
+        try {
+            const res = await fetch('/pembelajaran/progress/simpan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept'       : 'application/json',
+                },
+                body: JSON.stringify({
+                    module : currentModule,
+                    huruf  : letter,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                // Sinkronkan masteredLetters dari response server (single source of truth)
+                masteredLetters = Array.isArray(data.mastered) ? data.mastered : masteredLetters;
+            } else {
+                throw new Error(data.message ?? 'Gagal menyimpan');
+            }
+        } catch (err) {
+            console.warn('Gagal simpan ke server, fallback localStorage:', err);
+            // Fallback: simpan ke localStorage
+            if (!masteredLetters.includes(letter)) masteredLetters.push(letter);
+            localStorage.setItem(`signlearn_mastered_${currentModule}`, JSON.stringify(masteredLetters));
+        } finally {
+            isSaving = false;
+        }
+
         updateProgressUI();
     }
 
+    // ─── RENDER GRID HURUF A-Z ──────────────────────────────────────────────────
     function renderAlphabetGrid() {
         const grid = document.getElementById('alphabetGrid');
         if (!grid) return;
@@ -148,51 +212,64 @@
 
         allLetters.forEach(letter => {
             const mastered = masteredLetters.includes(letter);
-            const div = document.createElement('div');
-            div.className = `relative flex flex-col items-center justify-center py-3 rounded-xl cursor-pointer border-2 transition-all duration-200 select-none
-                ${mastered
-                    ? 'border-pink-300 shadow-sm'
-                    : 'border-gray-200 hover:border-pink-300 bg-white'}`;
-            div.style.background = mastered
-                ? 'linear-gradient(135deg, #F9A8D4, #EC4899)'
-                : '';
-            div.innerHTML = `
-                <span class="text-base font-extrabold ${mastered ? 'text-white' : 'text-gray-700'}">${letter}</span>
-                ${mastered ? '<span class="absolute top-1 right-1.5 text-white text-xs font-bold">✓</span>' : ''}
-            `;
-            // Klik huruf -> tampilkan modal popup
-            div.onclick = () => showModal(letter);
+            const div      = document.createElement('div');
+
+            div.className = `relative flex flex-col items-center justify-center py-3 rounded-xl cursor-pointer border-2 transition-all duration-200 select-none`;
+
+            if (mastered) {
+                // Sudah dikuasai → pink gradient
+                div.style.background = 'linear-gradient(135deg, #F9A8D4, #EC4899)';
+                div.style.borderColor = '#F472B6';
+                div.innerHTML = `
+                    <span class="text-base font-extrabold text-white">${letter}</span>
+                    <span class="absolute top-1 right-1.5 text-white text-xs font-bold">✓</span>
+                `;
+            } else {
+                // Belum dikuasai → putih bersih
+                div.style.background  = '#FFFFFF';
+                div.style.borderColor = '#E5E7EB';
+                div.innerHTML = `
+                    <span class="text-base font-extrabold text-gray-700">${letter}</span>
+                `;
+                // Hover effect via JS agar konsisten
+                div.addEventListener('mouseenter', () => {
+                    if (!masteredLetters.includes(letter)) div.style.borderColor = '#F9A8D4';
+                });
+                div.addEventListener('mouseleave', () => {
+                    if (!masteredLetters.includes(letter)) div.style.borderColor = '#E5E7EB';
+                });
+            }
+
+            div.addEventListener('click', () => showModal(letter));
             grid.appendChild(div);
         });
     }
 
-    // Tampilkan modal popup
+    // ─── MODAL ──────────────────────────────────────────────────────────────────
     function showModal(letter) {
         selectedLetter = letter;
         const isMastered = masteredLetters.includes(letter);
 
-        // Update modal content
-        document.getElementById('modalLetter').innerText = letter;
+        document.getElementById('modalLetter').innerText    = letter;
         document.getElementById('modalLetterBig').innerText = letter;
-        document.getElementById('modalDescription').innerHTML = `Pelajari bahasa isyarat untuk huruf ${letter} dalam modul ${currentModule}`;
+        document.getElementById('modalDescription').innerText =
+            `Pelajari bahasa isyarat untuk huruf ${letter} dalam modul ${currentModule}`;
 
-        // Update tombol "Sudah Dikuasai" di modal
         const markBtn = document.getElementById('markMasteredModalBtn');
         if (isMastered) {
-            markBtn.innerHTML = ' Sudah Dikuasai';
-            markBtn.classList.add('bg-green-100', 'text-green-600', 'border-green-400');
-            markBtn.disabled = true;
-            markBtn.style.opacity = '0.6';
-            markBtn.style.cursor = 'not-allowed';
+            markBtn.innerHTML    = '✓ Sudah Dikuasai';
+            markBtn.disabled     = true;
+            markBtn.style.opacity = '0.5';
+            markBtn.style.cursor  = 'not-allowed';
+            markBtn.className     = 'w-full py-3 rounded-xl font-bold border-2 transition flex items-center justify-center gap-2 border-green-300 text-green-500 bg-green-50 cursor-not-allowed';
         } else {
-            markBtn.innerHTML = ' Sudah Dikuasai';
-            markBtn.classList.remove('bg-green-100', 'text-green-600', 'border-green-400');
-            markBtn.disabled = false;
+            markBtn.innerHTML    = '✓ Tandai Sudah Dikuasai';
+            markBtn.disabled     = false;
             markBtn.style.opacity = '1';
-            markBtn.style.cursor = 'pointer';
+            markBtn.style.cursor  = 'pointer';
+            markBtn.className     = 'w-full py-3 rounded-xl font-bold border-2 transition flex items-center justify-center gap-2 border-green-400 text-green-700 bg-green-50 hover:bg-green-100';
         }
 
-        // Tampilkan modal
         document.getElementById('letterModal').style.display = 'flex';
     }
 
@@ -200,135 +277,125 @@
         document.getElementById('letterModal').style.display = 'none';
         selectedLetter = null;
     }
-    document.getElementById('viewModuleBtn').onclick = function() {
-    if (selectedLetter) {
-        window.location.href = `/pembelajaran/${currentModule.toLowerCase()}/${selectedLetter.toLowerCase()}/detail`;
-    }
-};
 
-    // Tandai huruf sebagai dikuasai (dari modal)
-    function markMasteredFromModal() {
-        if (!selectedLetter) return;
-
-        if (!masteredLetters.includes(selectedLetter)) {
-            masteredLetters.push(selectedLetter);
-            saveMastered();
-            showToast(`🎉 Huruf ${selectedLetter} berhasil dikuasai! `);
-            closeModal();
-        } else {
-            showToast(`Huruf ${selectedLetter} sudah kamu kuasai sebelumnya! `, 'info');
-            closeModal();
+    // ─── TOMBOL MODAL ───────────────────────────────────────────────────────────
+    document.getElementById('viewModuleBtn').onclick = function () {
+        if (selectedLetter) {
+            window.location.href = `/pembelajaran/${currentModule.toLowerCase()}/${selectedLetter.toLowerCase()}`;
         }
-    }
+    };
 
-    // Praktik: redirect ke halaman detail dengan kamera
-    function goToPractice() {
+    document.getElementById('practiceNowBtn').onclick = function () {
+        if (selectedLetter) {
+            window.location.href = `/praktik/${currentModule.toLowerCase()}/${selectedLetter.toLowerCase()}`;
+        }
+    };
+
+    async function markMasteredFromModal() {
         if (!selectedLetter) return;
-        window.location.href = `/pembelajaran/${currentModule.toLowerCase()}/${selectedLetter.toLowerCase()}`;
+        if (masteredLetters.includes(selectedLetter)) {
+            showToast(`Huruf ${selectedLetter} sudah dikuasai sebelumnya!`, 'info');
+            closeModal();
+            return;
+        }
+
+        // Optimistic UI: langsung tutup modal dan update tampilan
+        const letter = selectedLetter;
+        closeModal();
+
+        showToast(`Menyimpan huruf ${letter}...`, 'info');
+        await saveMastered(letter);
+        showToast(`✓ Huruf ${letter} berhasil dikuasai!`, 'success');
     }
 
-    // ── SIMPAN HASIL AI KE DATABASE ──────────────────────
-    // Fungsi ini dipanggil dari halaman huruf (view huruf.blade.php)
-    // setelah AI berhasil mendeteksi gesture dan menghasilkan skor.
-    //
-    // Parameter:
-    //   language    : 'bisindo' atau 'sibi'
-    //   huruf       : 'A' sampai 'Z'
-    //   skorAI      : angka 0.0 - 1.0 (confidence dari FastAPI)
-    //   prediksiAI  : huruf yang diprediksi AI (string 1 karakter)
-    //
+    // ─── TOAST NOTIFIKASI ───────────────────────────────────────────────────────
+    function showToast(message, type = 'success') {
+        // Hapus toast lama jika ada
+        document.querySelectorAll('.signlearn-toast').forEach(t => t.remove());
+
+        const toast = document.createElement('div');
+        toast.className = 'signlearn-toast fixed bottom-5 left-1/2 transform -translate-x-1/2 px-5 py-2 rounded-full shadow-lg text-sm z-50 text-white transition-opacity duration-300';
+        toast.style.backgroundColor =
+            type === 'success' ? '#10B981' :
+            type === 'info'    ? '#6366F1' : '#EF4444';
+        toast.innerText = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    // ─── SWITCH MODUL ───────────────────────────────────────────────────────────
+    function setActiveModule(module) {
+        currentModule = module;
+
+        const bisindoCard = document.getElementById('moduleBisindo');
+        const sibiCard    = document.getElementById('moduleSibi');
+        const btnBisindo  = document.getElementById('btnBisindo');
+        const btnSibi     = document.getElementById('btnSibi');
+        const badge       = document.getElementById('activeModuleBadge');
+
+        if (module === 'BISINDO') {
+            bisindoCard.style.borderColor = '#F472B6';
+            sibiCard.style.borderColor    = '#E5E7EB';
+            btnBisindo.innerText          = 'Aktif';
+            btnBisindo.style.cssText      = 'background-color:#D96FAD; color:white;';
+            btnSibi.innerText             = 'Mulai';
+            btnSibi.style.cssText         = '';
+            btnSibi.className             = 'text-xs font-bold px-4 py-2 rounded-xl transition bg-gray-100 text-gray-400';
+        } else {
+            sibiCard.style.borderColor    = '#F472B6';
+            bisindoCard.style.borderColor = '#E5E7EB';
+            btnSibi.innerText             = 'Aktif';
+            btnSibi.style.cssText         = 'background-color:#D96FAD; color:white;';
+            btnBisindo.innerText          = 'Mulai';
+            btnBisindo.style.cssText      = '';
+            btnBisindo.className          = 'text-xs font-bold px-4 py-2 rounded-xl transition bg-gray-100 text-gray-400';
+        }
+
+        badge.innerText = module;
+
+        // Reload progress dari DB untuk modul yang dipilih
+        loadProgress();
+    }
+
+    // ─── HELPER: Simpan hasil praktik AI ────────────────────────────────────────
     async function simpanHasilAI(language, huruf, skorAI, prediksiAI) {
         try {
             const res = await fetch('/praktik/simpan', {
                 method: 'POST',
                 headers: {
-                    'Content-Type':  'application/json',
-                    'X-CSRF-TOKEN':  document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').content,
                 },
                 body: JSON.stringify({
-                    language:    language,
-                    huruf:       huruf,
-                    skor_ai:     skorAI,
-                    prediksi_ai: prediksiAI,
+                    language    : language,
+                    huruf       : huruf,
+                    skor_ai     : skorAI,
+                    prediksi_ai : prediksiAI,
                 }),
             });
-
             const data = await res.json();
             console.log('Hasil tersimpan:', data);
             return data;
-
         } catch (err) {
-            // Gagal simpan tidak mengganggu user — cukup log
             console.warn('Gagal menyimpan hasil praktik:', err);
             return null;
         }
     }
 
-    function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.innerText = message;
-        toast.className = `fixed bottom-5 left-1/2 transform -translate-x-1/2 px-5 py-2 rounded-full shadow-lg text-sm z-50 ${type === 'success' ? 'bg-green-500' : 'bg-blue-500'} text-white`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
-    }
-
-    function setActiveModule(module) {
-        currentModule = module;
-
-        const bisindoCard = document.getElementById('moduleBisindo');
-        const sibiCard = document.getElementById('moduleSibi');
-        const btnBisindo = document.getElementById('btnBisindo');
-        const btnSibi = document.getElementById('btnSibi');
-        const badge = document.getElementById('activeModuleBadge');
-
-        if (module === 'BISINDO') {
-            bisindoCard.classList.add('border-pink-400');
-            bisindoCard.classList.remove('border-gray-200');
-            sibiCard.classList.add('border-gray-200');
-            sibiCard.classList.remove('border-pink-400');
-
-            btnBisindo.innerText = 'Aktif';
-            btnBisindo.style.backgroundColor = '#D96FAD';
-            btnBisindo.style.color = 'white';
-            btnSibi.innerText = 'Mulai';
-            btnSibi.style.backgroundColor = '';
-            btnSibi.style.color = '#9CA3AF';
-            btnSibi.className = 'text-xs font-bold px-4 py-2 rounded-xl transition bg-gray-100 text-gray-400';
-        } else {
-            sibiCard.classList.add('border-pink-400');
-            sibiCard.classList.remove('border-gray-200');
-            bisindoCard.classList.add('border-gray-200');
-            bisindoCard.classList.remove('border-pink-400');
-
-            btnSibi.innerText = 'Aktif';
-            btnSibi.style.backgroundColor = '#D96FAD';
-            btnSibi.style.color = 'white';
-            btnBisindo.innerText = 'Mulai';
-            btnBisindo.style.backgroundColor = '';
-            btnBisindo.style.color = '#9CA3AF';
-            btnBisindo.className = 'text-xs font-bold px-4 py-2 rounded-xl transition bg-gray-100 text-gray-400';
-        }
-
-        badge.innerText = module;
-        renderAlphabetGrid();
-    }
-
-    // Event binding modal
-    document.getElementById('closeModalBtn').onclick = closeModal;
+    // ─── EVENT BINDINGS ─────────────────────────────────────────────────────────
+    document.getElementById('closeModalBtn').onclick        = closeModal;
     document.getElementById('markMasteredModalBtn').onclick = markMasteredFromModal;
-    document.getElementById('practiceNowBtn').onclick = goToPractice;
-
-    // Tutup modal klik di luar
-    document.getElementById('letterModal').onclick = (e) => {
-        if (e.target === document.getElementById('letterModal')) {
-            closeModal();
-        }
+    document.getElementById('letterModal').onclick          = (e) => {
+        if (e.target === document.getElementById('letterModal')) closeModal();
     };
 
-    // Inisialisasi
-    loadProgress();
-    setActiveModule('BISINDO');
+    // ─── INIT ───────────────────────────────────────────────────────────────────
+    setActiveModule('BISINDO'); // akan otomatis panggil loadProgress()
 </script>
 @endpush
+
 @include('layout.footer')
 @endsection
