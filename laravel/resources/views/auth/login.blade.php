@@ -118,6 +118,12 @@
                     Belum punya akun?
                     <a href="{{ route('register') }}" class="font-bold text-gray-700 hover:underline">Daftar</a>
                 </p>
+                <div class="text-center mt-4">
+                    <a href="{{ route('admin.login') }}"
+                    class="text-xs text-gray-400 hover:text-pink-500 transition">
+                        Login sebagai Admin
+                    </a>
+                </div>
             </form>
         </div>
     </div>

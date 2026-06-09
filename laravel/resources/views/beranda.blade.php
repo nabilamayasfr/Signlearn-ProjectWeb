@@ -133,13 +133,15 @@
       </h2>
 
       @php
-        $mastered = $userProgress->mastered ?? 12;
-        $total = $userProgress->total ?? 26;
-        $pct = round(($mastered / $total) * 100);
+        $mastered = $userProgress->mastered ?? 0;
+        $total    = $userProgress->total    ?? 52;
+        $pct      = $userProgress->pct      ?? 0;
       @endphp
 
       <p class="text-sm text-black mb-4">
-        Kamu sudah menguasai {{ $mastered }}/{{ $total }} huruf ({{ $pct }}%)
+          Kamu sudah menguasai <strong>{{ $mastered }}/{{ $total }}</strong> huruf
+          <span class="text-pink-600 font-bold">({{ $pct }}%)</span>
+          <span class="text-gray-400 text-xs block mt-0.5">26 huruf BISINDO + 26 huruf SIBI</span>
       </p>
 
       <div class="w-full h-3 bg-pink-100 rounded-full overflow-hidden mb-2">

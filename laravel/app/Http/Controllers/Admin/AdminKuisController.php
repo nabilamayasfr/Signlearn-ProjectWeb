@@ -13,7 +13,7 @@ class AdminKuisController extends Controller
      */
     public function index()
     {
-        return view('admin.kuis');
+        return view('admin_kuis');
     }
 
     /**

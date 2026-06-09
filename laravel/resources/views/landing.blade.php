@@ -50,7 +50,7 @@
                 Beranda
                 <span class="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C82D85] rounded transition-all duration-200 group-hover:w-full"></span>
             </a>
-            <a href="{{ route('pembelajaran.index') }}" class="relative pb-[3px] hover:text-[#C82D85] group">
+            <a href="{{ route('pembelajaran') }}" class="relative pb-[3px] hover:text-[#C82D85] group">
                 Pembelajaran
                 <span class="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C82D85] rounded transition-all duration-200 group-hover:w-full"></span>
             </a>
@@ -77,19 +77,19 @@
     <section class="grid md:grid-cols-[1.15fr_0.85fr] items-center gap-[40px] px-6 md:px-12 py-[48px]">
 
         <div class="animate-fadeUp">
-            <h1 class="text-[clamp(2rem,3.8vw,3.4rem)] leading-[1.22] font-extrabold mb-[20px] tracking-[-0.5px]">
+            <h1 class="text-[2rem] md:text-[3rem] leading-[1.25] font-extrabold mb-5 tracking-tight">
                 Belajar <span class="text-[#C82D85]">Bahasa Isyarat</span><br>
                 Dengan AI Secara<br>
                 Mandiri
             </h1>
 
-            <p class="text-[1.25rem] leading-[1.85] text-[#7A4B78] mb-[32px] max-w-[550px]">
+            <p class="text-[1rem] md:text-[1.1rem] leading-[1.75] text-[#7A4B78] mb-8 max-w-lg">
                 Aplikasi cerdas berbasis AI untuk belajar dan melatih bahasa isyarat
                 dengan mudah dan menyenangkan.
             </p>
 
             <div class="flex gap-[14px] flex-wrap">
-                <a href="{{ route('pembelajaran.index') }}"
+                <a href="{{ route('pembelajaran') }}"
                    class="px-[26px] py-[11px] rounded-[12px] bg-white text-[#C82D85] border-[1.5px] border-[#F7C4DF] hover:bg-[#F7DAED] shadow transition">
                     Mulai Belajar
                 </a>

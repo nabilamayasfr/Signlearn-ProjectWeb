@@ -57,9 +57,15 @@ class ProfilController extends Controller
             }
         }
 
-        // Gabungkan huruf dari praktik + kuis, ambil yang unik
-        $progressCount   = $hurufDikuasaiPraktik->merge($hurufBenarKuis)->unique()->count();
-        $progressPercent = round(($progressCount / 26) * 100);
+        $hurufDikuasaiPraktik52 = PraktikResult::where('user_id', $userId)
+            ->where('status', 'berhasil')
+            ->select('language', 'huruf')
+            ->distinct()
+            ->get()
+            ->map(fn($r) => $r->language . '-' . $r->huruf); // contoh: "bisindo-A"
+
+        $progressCount   = $hurufDikuasaiPraktik52->unique()->count();
+        $progressPercent = round(($progressCount / 52) * 100);
 
         // ── Statistik per bahasa ──
         $statPerBahasa = [

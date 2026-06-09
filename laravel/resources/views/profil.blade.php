@@ -226,7 +226,7 @@
             <div class="flex items-center gap-2 mb-1">
                 <h3 class="font-extrabold text-gray-800">Kemajuan Belajar</h3>
             </div>
-            <p class="text-gray-500 text-sm mb-3">Kamu sudah menguasai <span class="font-semibold text-gray-700">{{ $progressCount ?? 0 }}</span>/26 huruf (<span>{{ $progressPercent ?? 0 }}</span>%)</p>
+            <p class="text-gray-500 text-sm mb-3">Kamu sudah menguasai <span class="font-semibold text-gray-700">{{ $progressCount ?? 0 }}</span>/52 huruf (<span>{{ $progressPercent ?? 0 }}</span>%)</p>
             <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
                 <div class="h-3 rounded-full transition-all duration-500"
                      style="width: {{ $progressPercent ?? 0 }}%; background: linear-gradient(90deg, #F472B6, #DB2777);"></div>

@@ -3,35 +3,61 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
+    // Tampilkan halaman login admin
+    public function showLogin()
+    {
+        // Kalau sudah login sebagai admin, langsung ke dashboard
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return redirect()->route('admin.pengguna');
+        }
+
+        // Kalau login sebagai user biasa, logout dulu
+        if (Auth::check() && Auth::user()->role !== 'admin') {
+            Auth::logout();
+        }
+
+        return view('auth.admin');
+    }
+
+    // Proses login admin
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
-        // Hardcoded credentials
-        if ($request->username === 'mara26' && $request->password === '12345') {
-            // Set session admin
-            Session::put('admin_logged_in', true);
-            Session::put('admin_username', $request->username);
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
 
-            return redirect()->route('admin.pengguna'); // pastikan route ini ada
+            // Cek role admin
+            if (Auth::user()->role === 'admin') {
+                $request->session()->regenerate();
+
+                // ← INI yang penting: redirect ke admin dashboard, BUKAN beranda
+                return redirect()->route('admin.pengguna');
+            }
+
+            // Login berhasil tapi bukan admin
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Akun ini tidak memiliki akses admin.',
+            ])->onlyInput('email');
         }
 
         return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ])->onlyInput('username');
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
-        Session::forget('admin_logged_in');
-        Session::forget('admin_username');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('admin.login');
     }
 }

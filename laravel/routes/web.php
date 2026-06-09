@@ -1,17 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\PembelajaranController;
 use App\Http\Controllers\HistoriController;
 use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\LatihanController;
 use App\Http\Controllers\Admin\AdminKuisController;
 use App\Http\Controllers\PraktikController;
-
+use App\Http\Controllers\BerandaController;
 
 Route::get('/', function () {
     return view('landing');
@@ -23,16 +22,11 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/beranda', function () {
-    return view('beranda');
-})->name('beranda');
-
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
 Route::get('/pembelajaran', [PembelajaranController::class, 'index'])->name('pembelajaran');
-Route::get('/pembelajaran.index', [PembelajaranController::class, 'index'])->name('pembelajaran.index');
 
 Route::get('/pembelajaran/sibi', function () {
     return view('pembelajaran.sibi');
@@ -42,20 +36,20 @@ Route::get('/pembelajaran/bisindo', function () {
     return view('pembelajaran.bisindo');
 })->name('pembelajaran.bisindo');
 
-// ⚠️ Progress HARUS di atas /{modul}/{huruf}
 Route::get('/pembelajaran/progress',         [PembelajaranController::class, 'getProgress'])->middleware('auth');
 Route::post('/pembelajaran/progress/simpan', [PembelajaranController::class, 'simpanProgress'])->middleware('auth');
 
-// Ini harus SETELAH route progress
 Route::get('/pembelajaran/{modul}/{huruf}', [PembelajaranController::class, 'showHuruf'])->name('pembelajaran.huruf');
 
-Route::get('/histori', [HistoriController::class, 'index'])
-     ->name('histori')
-     ->middleware('auth');
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
-    Route::put('/profil', [ProfilController::class, 'update'])->name('profile.update');
+    Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
+    Route::get('/histori', [HistoriController::class, 'index'])->name('histori');
+    Route::get('/profil',  [ProfilController::class, 'index'])->name('profil');
+    Route::put('/profil',  [ProfilController::class, 'update'])->name('profile.update');
+
+    // Praktik AI
+    Route::post('/praktik/simpan', [PraktikController::class, 'simpan'])->name('praktik.simpan');
+    Route::get('/praktik/riwayat/{modul}/{huruf}', [PraktikController::class, 'riwayatHuruf'])->name('praktik.riwayat');
 });
 
 Route::get('/latihan', [LatihanController::class, 'index'])->name('latihan');
@@ -64,33 +58,24 @@ Route::post('/latihan/simpan-hasil', [LatihanController::class, 'simpanHasil'])-
 
 Route::get('/praktik/{modul}/{huruf}', [PraktikController::class, 'show'])->name('praktik.huruf');
 
-Route::post('/praktik/simpan', [PraktikController::class, 'simpan'])
-     ->name('praktik.simpan')
-     ->middleware('auth');
-
-Route::get('/praktik/riwayat/{modul}/{huruf}', [PraktikController::class, 'riwayatHuruf'])
-     ->name('praktik.riwayat')
-     ->middleware('auth');
 
 // ─── ADMIN ───────────────────────────────────────────────────────────────────
 
-Route::get('/admin/login', function () {
-    return view('auth.admin');
-})->name('admin.login');
-
+Route::get('/admin/login',  [AdminAuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/logout',[AdminAuthController::class, 'logout'])->name('admin.logout');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/pengguna',  [AdminController::class, 'pengguna'])->name('pengguna');
     Route::get('/modul',     [AdminController::class, 'modul'])->name('modul');
     Route::post('/modul',    [AdminController::class, 'storeModul'])->name('modul.store');
     Route::put('/modul/{id}',[AdminController::class, 'updateModul'])->name('modul.update');
 
-    // Kuis
+    // Kuis admin
     Route::get('/kuis',         [AdminKuisController::class, 'index'])->name('kuis');
-    Route::get('/kuis/data',    [AdminKuisController::class, 'getData']);
-    Route::post('/soal',        [AdminKuisController::class, 'tambahSoal']);
-    Route::put('/soal/{id}',    [AdminKuisController::class, 'editSoal']);
-    Route::delete('/soal/{id}', [AdminKuisController::class, 'hapusSoal']);
+    Route::get('/kuis/data',    [AdminKuisController::class, 'getData'])->name('kuis.data');
+    Route::post('/soal',        [AdminKuisController::class, 'tambahSoal'])->name('soal.store');
+    Route::put('/soal/{id}',    [AdminKuisController::class, 'editSoal'])->name('soal.update');
+    Route::delete('/soal/{id}', [AdminKuisController::class, 'hapusSoal'])->name('soal.delete');
 });
