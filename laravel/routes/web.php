@@ -26,20 +26,20 @@ Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
-Route::get('/pembelajaran', [PembelajaranController::class, 'index'])->name('pembelajaran');
+Route::get('/pembelajaran.index', [PembelajaranController::class, 'index'])->name('pembelajaran.index')->middleware('auth');
 
 Route::get('/pembelajaran/sibi', function () {
     return view('pembelajaran.sibi');
-})->name('pembelajaran.sibi');
+})->name('pembelajaran.sibi')->middleware('auth');
 
 Route::get('/pembelajaran/bisindo', function () {
     return view('pembelajaran.bisindo');
-})->name('pembelajaran.bisindo');
+})->name('pembelajaran.bisindo')->middleware('auth');
 
 Route::get('/pembelajaran/progress',         [PembelajaranController::class, 'getProgress'])->middleware('auth');
 Route::post('/pembelajaran/progress/simpan', [PembelajaranController::class, 'simpanProgress'])->middleware('auth');
 
-Route::get('/pembelajaran/{modul}/{huruf}', [PembelajaranController::class, 'showHuruf'])->name('pembelajaran.huruf');
+Route::get('/pembelajaran/{modul}/{huruf}', [PembelajaranController::class, 'showHuruf'])->name('pembelajaran.huruf')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
@@ -48,15 +48,15 @@ Route::middleware('auth')->group(function () {
     Route::put('/profil',  [ProfilController::class, 'update'])->name('profile.update');
 
     // Praktik AI
-    Route::post('/praktik/simpan', [PraktikController::class, 'simpan'])->name('praktik.simpan');
-    Route::get('/praktik/riwayat/{modul}/{huruf}', [PraktikController::class, 'riwayatHuruf'])->name('praktik.riwayat');
+    Route::post('/praktik/simpan', [PraktikController::class, 'simpan'])->name('praktik.simpan')->middleware('auth');
+    Route::get('/praktik/riwayat/{modul}/{huruf}', [PraktikController::class, 'riwayatHuruf'])->name('praktik.riwayat')->middleware('auth');
 });
 
-Route::get('/latihan', [LatihanController::class, 'index'])->name('latihan');
-Route::get('/latihan/soal', [LatihanController::class, 'getSoal'])->name('latihan.soal');
-Route::post('/latihan/simpan-hasil', [LatihanController::class, 'simpanHasil'])->name('latihan.simpan');
+Route::get('/latihan', [LatihanController::class, 'index'])->name('latihan')->middleware('auth');
+Route::get('/latihan/soal', [LatihanController::class, 'getSoal'])->name('latihan.soal')->middleware('auth');
+Route::post('/latihan/simpan-hasil', [LatihanController::class, 'simpanHasil'])->name('latihan.simpan')->middleware('auth');
 
-Route::get('/praktik/{modul}/{huruf}', [PraktikController::class, 'show'])->name('praktik.huruf');
+Route::get('/praktik/{modul}/{huruf}', [PraktikController::class, 'show'])->name('praktik.huruf')->middleware('auth');
 
 
 // ─── ADMIN ───────────────────────────────────────────────────────────────────

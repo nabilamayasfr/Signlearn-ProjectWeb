@@ -136,7 +136,7 @@
             <p class="text-sm text-gray-500 font-medium">Praktik Terakhir</p>
 
             @if($hurufTerakhir !== '-')
-            <a href="{{ route('pembelajaran') }}"
+            <a href="{{ route('pembelajaran.index') }}"
                 class="text-4xl font-extrabold text-pink-500 mt-1 block hover:text-pink-600 transition">
                 {{ $hurufTerakhir }}
             </a>
@@ -221,18 +221,7 @@
 
         </div>
 
-        {{-- ===== KEMAJUAN BELAJAR ===== --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-5 mb-8">
-            <div class="flex items-center gap-2 mb-1">
-                <h3 class="font-extrabold text-gray-800">Kemajuan Belajar</h3>
-            </div>
-            <p class="text-gray-500 text-sm mb-3">Kamu sudah menguasai <span class="font-semibold text-gray-700">{{ $progressCount ?? 0 }}</span>/52 huruf (<span>{{ $progressPercent ?? 0 }}</span>%)</p>
-            <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
-                <div class="h-3 rounded-full transition-all duration-500"
-                     style="width: {{ $progressPercent ?? 0 }}%; background: linear-gradient(90deg, #F472B6, #DB2777);"></div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <script>

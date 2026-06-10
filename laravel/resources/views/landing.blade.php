@@ -42,7 +42,7 @@
     <header class="flex items-center justify-between px-[48px] py-[18px] sticky top-0 z-[200] bg-[#FEE6F2]">
 
         <div class="flex items-center">
-            <img src="{{ asset('assets/logo.png') }}" class="w-[130px]">
+            <img src="{{ asset('assets/tulisan.png') }}" class="w-[130px]">
         </div>
 
         <nav class="hidden md:flex gap-[36px] text-[14.5px] text-[#492F48] font-medium">
@@ -50,7 +50,7 @@
                 Beranda
                 <span class="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C82D85] rounded transition-all duration-200 group-hover:w-full"></span>
             </a>
-            <a href="{{ route('pembelajaran') }}" class="relative pb-[3px] hover:text-[#C82D85] group">
+            <a href="{{ route('login') }}" class="relative pb-[3px] hover:text-[#C82D85] group">
                 Pembelajaran
                 <span class="absolute left-0 bottom-0 w-0 h-[2px] bg-[#C82D85] rounded transition-all duration-200 group-hover:w-full"></span>
             </a>
@@ -89,7 +89,7 @@
             </p>
 
             <div class="flex gap-[14px] flex-wrap">
-                <a href="{{ route('pembelajaran') }}"
+                <a href="{{ route('pembelajaran.index') }}"
                    class="px-[26px] py-[11px] rounded-[12px] bg-white text-[#C82D85] border-[1.5px] border-[#F7C4DF] hover:bg-[#F7DAED] shadow transition">
                     Mulai Belajar
                 </a>

@@ -183,7 +183,7 @@
       <h4>Navigasi</h4>
       <ul>
         <li><a href="{{ route('beranda') }}">Beranda</a></li>
-        <li><a href="{{ route('pembelajaran') }}">Pembelajaran</a></li>
+        <li><a href="{{ route('pembelajaran.index') }}">Pembelajaran</a></li>
         <li><a href="{{ route('latihan') }}">Latihan</a></li>
         <li><a href="{{ route('faq') }}">FAQ</a></li>
       </ul>
