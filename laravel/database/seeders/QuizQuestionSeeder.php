@@ -39,7 +39,7 @@ class QuizQuestionSeeder extends Seeder
     }
 
     // ══════════════════════════════════════════════════
-    //  BISINDO — PEMULA  (A B C D L O)
+    //  BISINDO — PEMULA  (A B C D L O J T)
     // ══════════════════════════════════════════════════
     private function bisindoPemula(): array
     {
@@ -92,11 +92,27 @@ class QuizQuestionSeeder extends Seeder
                 'options'        => ['O', 'C', 'A', 'D'],
                 'explanation'    => 'Huruf O dalam BISINDO: satu tangan membentuk lingkaran penuh — semua ujung jari (telunjuk, tengah, manis, kelingking) bertemu dengan ujung ibu jari membentuk lingkaran bulat seperti huruf O.',
             ],
+            [
+                'language'       => 'bisindo',
+                'level'          => 'pemula',
+                'image_path'     => 'bisindo/pemula/j.png',
+                'correct_answer' => 'J',
+                'options'        => ['J', 'I', 'Z', 'Y'],
+                'explanation'    => 'Huruf J dalam BISINDO: tangan membentuk kepalan ringan dengan ibu jari diluruskan ke samping sehingga menonjol secara horizontal, sementara jari lainnya ditekuk ke dalam telapak tangan. Posisi ibu jari yang memanjang menjadi ciri utama huruf J.',
+            ],
+            [
+                'language'       => 'bisindo',
+                'level'          => 'pemula',
+                'image_path'     => 'bisindo/pemula/t.png',
+                'correct_answer' => 'T',
+                'options'        => ['T', 'A', 'D', 'N'],
+                'explanation'    => 'Huruf T dalam BISINDO: dua tangan — tangan kiri dengan telunjuk tegak lurus ke atas, tangan kanan dengan telunjuk mengarah horizontal ke kiri menyentuh bagian atas telunjuk tangan kiri. Keduanya membentuk huruf T seperti tanda tambah yang tidak simetris.',
+            ],
         ];
     }
 
     // ══════════════════════════════════════════════════
-    //  BISINDO — MENENGAH  (E F G H I K)
+    //  BISINDO — MENENGAH  (E F G H I K P Q)
     // ══════════════════════════════════════════════════
     private function bisindoMenengah(): array
     {
@@ -149,6 +165,23 @@ class QuizQuestionSeeder extends Seeder
                 'options'        => ['K', 'P', 'V', 'U'],
                 'explanation'    => 'Huruf K dalam BISINDO: dua tangan — tangan kanan dengan telunjuk berdiri lurus ke atas, tangan kiri dengan telunjuk yang melengkung/ditekuk menyentuh sisi telunjuk tangan kanan dari samping, membentuk cabang seperti huruf K.',
             ],
+            [
+                'language'       => 'bisindo',
+                'level'          => 'menengah',
+                'image_path'     => 'bisindo/menengah/p.png',
+                'correct_answer' => 'P',
+                'options'        => ['P', 'K', 'D', 'B'],
+                'explanation'    => 'Huruf P dalam BISINDO: tangan kiri membentuk telunjuk yang tegak lurus ke atas, sementara tangan kanan membentuk sudut dengan telunjuk yang ditekuk dan ditempelkan pada ujung telunjuk tangan kiri. Kombinasi kedua tangan ini membentuk representasi huruf P.',
+            ],
+            [
+                'language'       => 'bisindo',
+                'level'          => 'menengah',
+                'image_path'     => 'bisindo/menengah/q.png',
+                'correct_answer' => 'Q',
+                'options'        => ['Q', 'G', 'P', 'O'],
+                'explanation'    => 'Huruf Q dalam BISINDO: tangan kiri membentuk lingkaran menggunakan ibu jari dan telunjuk, sedangkan tangan kanan membentuk telunjuk yang mengarah ke atas dan menyentuh bagian bawah lingkaran tersebut. Susunan kedua tangan menghasilkan bentuk yang menyerupai huruf Q.',
+            ],
+
         ];
     }
 
@@ -242,7 +275,7 @@ class QuizQuestionSeeder extends Seeder
     }
 
     // ══════════════════════════════════════════════════
-    //  SIBI — PEMULA  (A B C D L O)
+    //  SIBI — PEMULA  (A B C D L O J T)
     // ══════════════════════════════════════════════════
     private function sibiPemula(): array
     {
@@ -295,11 +328,27 @@ class QuizQuestionSeeder extends Seeder
                 'options'        => ['O', 'C', 'D', 'A'],
                 'explanation'    => 'Huruf O dalam SIBI: satu tangan membentuk lingkaran penuh — semua ujung jari (telunjuk, tengah, manis, kelingking) bertemu dengan ujung ibu jari membentuk lingkaran bulat seperti huruf O.',
             ],
+            [
+                'language'       => 'sibi',
+                'level'          => 'pemula',
+                'image_path'     => 'sibi/pemula/j.png',
+                'correct_answer' => 'J',
+                'options'        => ['J', 'I', 'Z', 'G'],
+                'explanation'    =>  'Huruf J dalam SIBI: tangan membentuk kepalan ringan dengan telunjuk tegak lurus mengarah ke atas, sementara jari tengah, manis, dan kelingking ditekuk ke dalam serta ibu jari menahan di samping. Posisi telunjuk yang berdiri lurus menjadi ciri utama pembentukan huruf J.',
+            ],
+            [
+                'language'       => 'sibi',
+                'level'          => 'pemula',
+                'image_path'     => 'sibi/pemula/t.png',
+                'correct_answer' => 'T',
+                'options'        => ['T', 'A', 'N', 'S'],
+                'explanation'    => 'Huruf T dalam SIBI: tangan membentuk kepalan dengan telunjuk tegak lurus mengarah ke atas, sedangkan jari tengah, manis, dan kelingking ditekuk rapat ke dalam. Ibu jari berada di samping atau menempel pada bagian telunjuk yang tertekuk, sehingga membentuk konfigurasi khas huruf T.',
+            ],
         ];
     }
 
     // ══════════════════════════════════════════════════
-    //  SIBI — MENENGAH  (E F G H I K)
+    //  SIBI — MENENGAH  (E F G H I K P Q)
     // ══════════════════════════════════════════════════
     private function sibiMenengah(): array
     {
@@ -351,6 +400,22 @@ class QuizQuestionSeeder extends Seeder
                 'correct_answer' => 'K',
                 'options'        => ['K', 'V', 'U', 'P'],
                 'explanation'    => 'Huruf K dalam SIBI: dua tangan — tangan kanan dengan telunjuk berdiri lurus ke atas, tangan kiri dengan telunjuk yang melengkung/ditekuk menyentuh sisi telunjuk tangan kanan dari samping, membentuk cabang seperti huruf K.',
+            ],
+            [
+                'language'       => 'sibi',
+                'level'          => 'menengah',
+                'image_path'     => 'sibi/menengah/p.png',
+                'correct_answer' => 'P',
+                'options'        => ['P', 'K', 'F', 'D'],
+                'explanation'    => 'Huruf P dalam SIBI: telunjuk dan jari tengah diluruskan ke bawah membentuk sudut terbuka menyerupai huruf V terbalik, sementara jari manis dan kelingking ditekuk ke dalam. Ibu jari menahan jari yang tertekuk sehingga menghasilkan bentuk khas huruf P.',
+            ],
+            [
+                'language'       => 'sibi',
+                'level'          => 'menengah',
+                'image_path'     => 'sibi/menengah/q.png',
+                'correct_answer' => 'Q',
+                'options'        => ['Q', 'G', 'P', 'C'],
+                'explanation'    => 'Huruf Q dalam SIBI: telunjuk dan ibu jari diluruskan mengarah ke bawah dengan jarak yang terpisah, sedangkan jari tengah, jari manis, dan kelingking ditekuk ke dalam telapak tangan. Bentuk ini menciptakan konfigurasi tangan yang menjadi ciri khas huruf Q.',
             ],
         ];
     }
