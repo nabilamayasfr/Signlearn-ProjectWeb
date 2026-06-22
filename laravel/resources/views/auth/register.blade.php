@@ -2,9 +2,15 @@
 
 @section('title', 'SignLearn - Daftar Akun')
 
-@section('content')
-
+@push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+    .register-page * {
+        font-family: 'Poppins', sans-serif;
+    }
+    .register-page input {
+        font-family: 'Poppins', sans-serif;
+    }
     /* Sembunyikan ikon mata bawaan browser pada input password */
     input[type="password"]::-ms-reveal,
     input[type="password"]::-ms-clear,
@@ -15,35 +21,65 @@
         pointer-events: none;
     }
 </style>
+@endpush
 
-<div class="min-h-screen flex items-center justify-center p-4" style="background-color: #FEE6F2;">
-    <div class="w-full max-w-4xl rounded-3xl overflow-hidden shadow-xl flex" style="min-height: 500px;">
+@section('content')
 
-        {{-- KIRI: Ilustrasi --}}
-        <div class="w-1/2 flex items-center justify-center"
-            style="background: linear-gradient(180deg, #F9C5E2 0%, #C07EB5 100%);">
-            <img src="{{ asset('assets/logo.png') }}"
-                alt="Mascot SignLearn"
-                class="max-w-[80%] max-h-[80%] object-contain" />
-        </div>
+<div class="register-page flex min-h-screen">
 
-        {{-- KANAN: Form PUTIH --}}
-        <div class="w-1/2 flex flex-col justify-center px-10 py-8 bg-white">
+    {{-- ===== KIRI: Branding panel dengan background pink ===== --}}
+    <div class="w-1/2 min-h-screen flex flex-col justify-center px-12 py-10"
+        style="background: linear-gradient(160deg, #F9C5E2 0%, #C82D85 55%, #951651 100%);">
 
-            <div class="flex justify-center mb-3">
-                <img src="{{ asset('assets/logo.png') }}"
-                    alt="Logo SignLearn"
-                    class="h-16 object-contain" />
+        <div>
+            {{-- Badge --}}
+            <div class="inline-flex items-center gap-[7px] bg-white/18 border border-white/35 rounded-full px-4 py-[6px] text-white text-[0.65rem] font-bold tracking-[1.5px] uppercase mb-5 w-fit">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-[13px] h-[13px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+                Belajar Bahasa Isyarat Mandiri
             </div>
 
-            <h1 class="text-2xl font-bold text-center text-gray-800 mb-1">
-                Daftar Ke <span style="color: #C07EB5;">SIGNLEARN</span>
-            </h1>
-            <p class="text-center text-gray-500 text-xs mb-5">
-                Belajar Bahasa Isyarat dengan AI Secara Mandiri
+            <h2 class="font-black text-white mb-5 text-[3rem] leading-[1.15]">
+                Kuasai Bahasa<br>Isyarat dengan<br>Teknologi AI
+            </h2>
+
+            <p class="text-white leading-relaxed max-w-sm text-[0.92rem] opacity-85">
+                Platform interaktif berbasis AI untuk mempelajari Bahasa Isyarat kapan saja dan di mana saja.
             </p>
 
-            {{-- Tampilkan error global --}}
+            {{-- Stats --}}
+            <div class="flex items-center gap-8 pt-8 mt-8 border-t border-white/30">
+                <div>
+                    <p class="text-white font-black text-[2rem] leading-none">26</p>
+                    <p class="font-semibold tracking-widest uppercase text-[0.65rem] text-white/75">BISINDO</p>
+                </div>
+                <div class="w-px h-10 bg-white/35"></div>
+                <div>
+                    <p class="text-white font-black text-[2rem] leading-none">26</p>
+                    <p class="font-semibold tracking-widest uppercase text-[0.65rem] text-white/75">SIBI</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {{-- ===== KANAN: Form ===== --}}
+    <div class="w-1/2 min-h-screen flex flex-col items-center justify-center py-12 px-8"
+        style="background: linear-gradient(180deg, #ffffff 60%, #FEE6F2 100%);">
+
+        <div class="w-full max-w-sm">
+
+            {{-- Tulisan --}}
+            <div class="mb-6">
+                <h1 class="font-extrabold text-gray-800 text-[1.9rem] leading-tight">
+                    Daftar Ke <span class="text-[#C82D85]">SIGNLEARN</span>
+                </h1>
+                <p class="text-gray-500 text-[0.85rem] mt-1">
+                    Belajar Bahasa Isyarat dengan AI Secara Mandiri
+                </p>
+            </div>
+
             @if (session('error'))
                 <div class="bg-red-50 border border-red-200 rounded-xl px-4 py-2 mb-4">
                     <p class="text-red-500 text-xs text-center">{{ session('error') }}</p>
@@ -55,9 +91,9 @@
 
                 {{-- Nama Lengkap --}}
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1 ml-1">Nama Lengkap</label>
+                    <label class="block font-medium mb-1.5 text-[0.75rem] text-gray-500">Nama Lengkap</label>
                     <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition @error('nama_lengkap') border-red-400 @enderror" />
+                        class="w-full rounded-2xl px-4 py-3 bg-gray-100 border-0 focus:outline-none focus:ring-2 focus:ring-[#C82D85] transition text-[0.875rem] @error('nama_lengkap') ring-2 ring-red-400 @enderror" />
                     @error('nama_lengkap')
                         <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                     @enderror
@@ -65,9 +101,9 @@
 
                 {{-- Nama Pengguna --}}
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1 ml-1">Nama Pengguna</label>
+                    <label class="block font-medium mb-1.5 text-[0.75rem] text-gray-500">Nama Pengguna</label>
                     <input type="text" name="username" value="{{ old('username') }}"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition @error('username') border-red-400 @enderror" />
+                        class="w-full rounded-2xl px-4 py-3 bg-gray-100 border-0 focus:outline-none focus:ring-2 focus:ring-[#C82D85] transition text-[0.875rem] @error('username') ring-2 ring-red-400 @enderror" />
                     @error('username')
                         <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                     @enderror
@@ -75,9 +111,9 @@
 
                 {{-- Email --}}
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1 ml-1">Email</label>
+                    <label class="block font-medium mb-1.5 text-[0.75rem] text-gray-500">Email</label>
                     <input type="email" name="email" value="{{ old('email') }}"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition @error('email') border-red-400 @enderror" />
+                        class="w-full rounded-2xl px-4 py-3 bg-gray-100 border-0 focus:outline-none focus:ring-2 focus:ring-[#C82D85] transition text-[0.875rem] @error('email') ring-2 ring-red-400 @enderror" />
                     @error('email')
                         <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                     @enderror
@@ -86,10 +122,10 @@
                 {{-- Kata Sandi & Konfirmasi --}}
                 <div class="flex gap-3">
                     <div class="w-1/2">
-                        <label class="block text-xs text-gray-600 mb-1 ml-1">Kata Sandi</label>
+                        <label class="block font-medium mb-1.5 text-[0.75rem] text-gray-500">Kata Sandi</label>
                         <div class="relative">
                             <input type="password" name="password" id="password"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition pr-10 @error('password') border-red-400 @enderror" />
+                                class="w-full rounded-2xl px-4 py-3 bg-gray-100 border-0 focus:outline-none focus:ring-2 focus:ring-[#C82D85] transition pr-10 text-[0.875rem] @error('password') ring-2 ring-red-400 @enderror" />
                             <button type="button" id="togglePassword"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
                                 <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -110,10 +146,10 @@
                     </div>
 
                     <div class="w-1/2">
-                        <label class="block text-xs text-gray-600 mb-1 ml-1">Konfirmasi Kata Sandi</label>
+                        <label class="block font-medium mb-1.5 text-[0.75rem] text-gray-500">Konfirmasi</label>
                         <div class="relative">
                             <input type="password" name="password_confirmation" id="password_confirmation"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition pr-10" />
+                                class="w-full rounded-2xl px-4 py-3 bg-gray-100 border-0 focus:outline-none focus:ring-2 focus:ring-[#C82D85] transition pr-10 text-[0.875rem]" />
                             <button type="button" id="toggleConfirmPassword"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
                                 <svg id="eyeIconConfirm" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -133,23 +169,22 @@
 
                 {{-- Nomor Telepon --}}
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1 ml-1">Nomor Telepon</label>
+                    <label class="block font-medium mb-1.5 text-[0.75rem] text-gray-500">Nomor Telepon</label>
                     <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon') }}"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition @error('nomor_telepon') border-red-400 @enderror" />
+                        class="w-full rounded-2xl px-4 py-3 bg-gray-100 border-0 focus:outline-none focus:ring-2 focus:ring-[#C82D85] transition text-[0.875rem] @error('nomor_telepon') ring-2 ring-red-400 @enderror" />
                     @error('nomor_telepon')
                         <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <button type="submit"
-                    class="w-full py-2.5 rounded-xl text-white font-semibold text-sm tracking-wide transition duration-200 hover:opacity-90 active:scale-95 shadow-md"
-                    style="background-color: #D96FAD;">
+                {{-- Tombol Daftar --}}
+                <button type="submit" class="w-full px-[26px] py-[11px] rounded-[12px] bg-[#C82D85] text-white shadow-[0_8px_24px_rgba(200,45,133,0.35)] hover:bg-[#951651] transition font-bold mt-2">
                     Daftar
                 </button>
 
-                <p class="text-center text-xs text-gray-500 pt-1">
+                <p class="text-center text-[0.78rem] text-gray-500 pt-1">
                     Sudah punya akun?
-                    <a href="{{ route('login') }}" class="font-bold text-gray-700 hover:underline">Masuk</a>
+                    <a href="{{ route('login') }}" class="font-bold hover:underline text-gray-700">Masuk</a>
                 </p>
             </form>
         </div>

@@ -90,7 +90,7 @@
                  class="relative bg-pink-50 rounded-xl flex items-center justify-center overflow-hidden"
                  style="min-height:220px; max-height:320px;">
                 @if($dataModul->thumbnail)
-                    <img src="{{ asset($dataModul->thumbnail) }}"
+                    <img src="{{ asset('assets/' . $dataModul->thumbnail) }}"
                          id="gambarIsyarat"
                          alt="Huruf {{ strtoupper($huruf) }}"
                          class="object-contain transition-all duration-300 cursor-zoom-in select-none"

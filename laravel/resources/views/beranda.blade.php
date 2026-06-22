@@ -63,7 +63,7 @@
 
       <!-- CARD -->
       <a href="{{ route('pembelajaran.index') }}"
-          class="flex justify-between items-center p-5 rounded-2xl text-white shadow-lg hover:scale-105 hover:shadow-xl transition bg-[linear-gradient(135deg,_#E4ACDB_50%,_#BA76AE_100%)]">
+          class="flex justify-between items-center p-5 rounded-2xl text-white shadow-lg hover:scale-105 hover:shadow-xl transition bg-gradient-to-br from-pink-300 to-pink-600">
 
         <div>
           <h3 class="font-extrabold mb-3">
