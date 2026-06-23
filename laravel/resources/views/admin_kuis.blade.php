@@ -18,15 +18,44 @@
 </div>
 
 {{-- Statistik Cards --}}
-<div class="grid grid-cols-2 gap-4 mb-8 max-w-sm">
-    <div class="bg-red-100 rounded-2xl shadow-sm border border-red-200 p-5 text-center">
-        <p class="text-4xl font-extrabold text-red-700 mb-1" id="totalKuisCount">0</p>
-        <p class="text-sm font-bold text-red-600">Total Kuis</p>
+<div class="grid grid-cols-3 gap-4 mb-8">
+
+    {{-- Total Kuis --}}
+    <div class="rounded-2xl p-5" style="background-color: #EDD5F7;">
+        <div class="flex items-center gap-2 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#7B2FBE]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <span class="text-3xl font-extrabold text-gray-800" id="totalKuisCount">0</span>
+        </div>
+        <p class="text-sm font-bold text-[#7B2FBE]">Total Kuis</p>
     </div>
-    <div class="bg-green-100 rounded-2xl shadow-sm border border-green-200 p-5 text-center">
-        <p class="text-4xl font-extrabold text-green-700 mb-1" id="totalLevelCount">0</p>
-        <p class="text-sm font-bold text-green-600">Level Kuis</p>
+
+    {{-- Total Soal --}}
+    <div class="rounded-2xl p-5" style="background-color: #FCE7F3;">
+        <div class="flex items-center gap-2 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#C82D85]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-3xl font-extrabold text-gray-800" id="totalSoalCount">0</span>
+        </div>
+        <p class="text-sm font-bold text-[#C82D85]">Total Soal</p>
     </div>
+
+    {{-- Level Kuis --}}
+    <div class="rounded-2xl p-5" style="background-color: #E0E7FF;">
+        <div class="flex items-center gap-2 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <span class="text-3xl font-extrabold text-gray-800" id="totalLevelCount">0</span>
+        </div>
+        <p class="text-sm font-bold text-indigo-500">Level Kuis</p>
+    </div>
+
 </div>
 
 {{-- Tabel Kuis --}}
@@ -192,8 +221,9 @@ async function loadData() {
       soalData[k.id] = k.soal ?? [];
     });
 
-    document.getElementById('totalKuisCount').innerText = data.total_soal;
-    document.getElementById('totalLevelCount').innerText = data.total_level;
+    document.getElementById('totalKuisCount').innerText = data.total_soal || 0;
+    document.getElementById('totalSoalCount').innerText = kuisData.reduce((total, k) => total + (k.soal?.length || 0), 0);
+    document.getElementById('totalLevelCount').innerText = data.total_level || 0;
 
     renderKuisTable();
   } catch (err) {

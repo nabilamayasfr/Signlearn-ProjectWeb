@@ -11,6 +11,7 @@ use App\Http\Controllers\LatihanController;
 use App\Http\Controllers\Admin\AdminKuisController;
 use App\Http\Controllers\PraktikController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
     return view('landing');
@@ -65,6 +66,11 @@ Route::get('/admin/login',  [AdminAuthController::class, 'showLogin'])->name('ad
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
 Route::post('/admin/logout',[AdminAuthController::class, 'logout'])->name('admin.logout');
 
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/data', [DashboardController::class, 'data'])->name('dashboard.data');
+});
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/pengguna',  [AdminController::class, 'pengguna'])->name('pengguna');

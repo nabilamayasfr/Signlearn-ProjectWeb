@@ -21,39 +21,39 @@
 <div class="grid grid-cols-3 gap-4 mb-8">
 
     {{-- Total Pengguna --}}
-    <div class="rounded-2xl p-5" style="background-color: #BAE6FD;">
+    <div class="rounded-2xl p-5" style="background-color: #EDD5F7;">
         <div class="flex items-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#7B2FBE]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m6-4.13a4 4 0 10-8 0 4 4 0 008 0z"/>
             </svg>
-            <span class="text-3xl font-extrabold text-gray-800">{{ $users->count() }}</span>
+            <span class="text-3xl font-extrabold text-gray-800" id="stat-total">{{ $users->count() }}</span>
         </div>
-        <p class="text-sm font-bold text-blue-600">Total Pengguna</p>
+        <p class="text-sm font-bold text-[#7B2FBE]">Total Pengguna</p>
     </div>
 
     {{-- Pengguna Aktif --}}
-    <div class="rounded-2xl p-5" style="background-color: #BBF7D0;">
+    <div class="rounded-2xl p-5" style="background-color: #FCE7F3;">
         <div class="flex items-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#C82D85]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m6-4.13a4 4 0 10-8 0 4 4 0 008 0z"/>
             </svg>
-            <span class="text-3xl font-extrabold text-gray-800">{{ $users->count() }}</span>
+            <span class="text-3xl font-extrabold text-gray-800" id="stat-aktif">{{ $users->count() }}</span>
         </div>
-        <p class="text-sm font-bold text-green-600">Pengguna Aktif</p>
+        <p class="text-sm font-bold text-[#C82D85]">Pengguna Aktif</p>
     </div>
 
     {{-- Pengguna Non Aktif --}}
-    <div class="rounded-2xl p-5" style="background-color: #FCA5A5;">
+    <div class="rounded-2xl p-5" style="background-color: #E0E7FF;">
         <div class="flex items-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m6-4.13a4 4 0 10-8 0 4 4 0 008 0z"/>
             </svg>
-            <span class="text-3xl font-extrabold text-gray-800">0</span>
+            <span class="text-3xl font-extrabold text-gray-800" id="stat-nonaktif">0</span>
         </div>
-        <p class="text-sm font-bold text-red-500">Pengguna Non Aktif</p>
+        <p class="text-sm font-bold text-indigo-500">Pengguna Non Aktif</p>
     </div>
 
 </div>
@@ -75,7 +75,7 @@
     {{-- Header Tabel --}}
     <div class="grid grid-cols-4 text-sm font-bold text-gray-700 px-4 mb-2">
         <span>Nama Pengguna</span>
-        <span>Gmail</span>
+        <span>Email</span>
         <span>Status</span>
         <span>Aksi</span>
     </div>
@@ -85,18 +85,18 @@
     <div class="space-y-2" id="userList">
 
         @foreach($users as $user)
-<div class="user-row grid grid-cols-4 items-center bg-white border border-gray-100 rounded-xl px-4 py-3 shadow-sm text-sm">
-    <span class="font-semibold text-gray-800 user-name">{{ $user->name }}</span>
-    <span class="text-gray-500 user-email">{{ $user->email }}</span>
-    <span class="user-status">
-        <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">Aktif</span>
-    </span>
+        <div class="user-row grid grid-cols-4 items-center bg-white border border-gray-100 rounded-xl px-4 py-3 shadow-sm text-sm">
+            <span class="font-semibold text-gray-800 user-name">{{ $user->name }}</span>
+            <span class="text-gray-500 user-email">{{ $user->email }}</span>
+            <span class="user-status">
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">Aktif</span>
+            </span>
             <span class="flex items-center gap-2">
-                {{-- Tombol Edit (style seperti modul) --}}
+                {{-- Tombol Edit --}}
                 <button onclick="openEditModal(this)"
                         data-nama="{{ $user->name }}"
-data-email="{{ $user->email }}"
-data-status="Aktif"
+                        data-email="{{ $user->email }}"
+                        data-status="Aktif"
                         class="px-3 py-1 rounded-lg text-xs font-bold border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 transition">
                     Edit
                 </button>
@@ -153,7 +153,7 @@ data-status="Aktif"
     </div>
 </div>
 
-{{-- Modal Edit Akun (terpisah) --}}
+{{-- Modal Edit Akun --}}
 <div id="modalEdit" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
         <div class="flex justify-between items-center mb-4">
@@ -190,11 +190,10 @@ data-status="Aktif"
 
 @push('scripts')
 <script>
-    let currentEditRow = null; // menyimpan baris yang sedang diedit
+    let currentEditRow = null;
 
     // Buka modal tambah
     document.getElementById('btnTambahAkun').addEventListener('click', function () {
-        // Reset form tambah
         document.getElementById('tambahNama').value = '';
         document.getElementById('tambahEmail').value = '';
         document.getElementById('tambahPassword').value = '';
@@ -202,7 +201,7 @@ data-status="Aktif"
         document.getElementById('modalTambah').style.display = 'flex';
     });
 
-    // Tutup modal (umum)
+    // Tutup modal
     function closeModal(id) {
         document.getElementById(id).style.display = 'none';
     }
@@ -223,7 +222,7 @@ data-status="Aktif"
 
         document.getElementById('editNama').value = nama;
         document.getElementById('editEmail').value = email;
-        document.getElementById('editPassword').value = ''; // kosongkan untuk keamanan
+        document.getElementById('editPassword').value = '';
         document.getElementById('editStatus').value = status;
         document.getElementById('modalEdit').style.display = 'flex';
     }
@@ -244,7 +243,6 @@ data-status="Aktif"
             return;
         }
 
-        // Buat baris baru
         const userList = document.getElementById('userList');
         const newRow = document.createElement('div');
         newRow.className = 'user-row grid grid-cols-4 items-center bg-white border border-gray-100 rounded-xl px-4 py-3 shadow-sm text-sm';
@@ -286,14 +284,12 @@ data-status="Aktif"
         const nama = document.getElementById('editNama').value.trim();
         const email = document.getElementById('editEmail').value.trim();
         const status = document.getElementById('editStatus').value;
-        // password diabaikan karena tidak disimpan di frontend demo
 
         if (!nama || !email) {
             alert('Nama dan Email harus diisi!');
             return;
         }
 
-        // Update baris
         currentEditRow.querySelector('.user-name').innerText = nama;
         currentEditRow.querySelector('.user-email').innerText = email;
         const statusSpan = currentEditRow.querySelector('.user-status');
@@ -301,7 +297,6 @@ data-status="Aktif"
             ? '<span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">Aktif</span>'
             : '<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-500">Non Aktif</span>';
 
-        // Update data attribute pada tombol edit di baris tersebut
         const editBtn = currentEditRow.querySelector('button[onclick*="openEditModal"]');
         if (editBtn) {
             editBtn.setAttribute('data-nama', nama);
@@ -349,12 +344,10 @@ data-status="Aktif"
             if (statusText === 'Aktif') aktif++;
         });
         const nonAktif = total - aktif;
-        const allStats = document.querySelectorAll('.grid.grid-cols-3.gap-4 .rounded-2xl');
-        if (allStats.length >= 3) {
-            allStats[0].querySelector('.text-3xl').innerText = total;
-            allStats[1].querySelector('.text-3xl').innerText = aktif;
-            allStats[2].querySelector('.text-3xl').innerText = nonAktif;
-        }
+
+        document.getElementById('stat-total').innerText = total;
+        document.getElementById('stat-aktif').innerText = aktif;
+        document.getElementById('stat-nonaktif').innerText = nonAktif;
     }
 
     // Helper escape HTML
