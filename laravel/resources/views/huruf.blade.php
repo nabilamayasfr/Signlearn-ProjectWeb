@@ -155,7 +155,10 @@
         {{-- Instructions Panel --}}
         <div class="bg-white rounded-2xl shadow-sm border border-pink-50 p-5">
             <div class="flex items-center gap-2.5 mb-4">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center bg-pink-100">
+                    <svg class="w-4 h-4 text-pink-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/>
+                    </svg>
                 </div>
                 <h2 class="text-sm font-bold text-gray-800">Tata Cara Praktik</h2>
             </div>
@@ -163,20 +166,18 @@
             <div class="flex flex-col gap-3 mb-4">
                 @php
                     $tips = [
-                        ['icon' => 'M6.827 6.175A2.31...', 'title' => 'Posisikan tangan di tengah frame', 'desc' => 'Pastikan seluruh tangan terlihat dalam area kamera dan tidak terpotong di tepi layar.'],
-                        ['icon' => 'M6.827 6.175A2.31...', 'title' => 'Gunakan latar belakang polos', 'desc' => 'Latar yang bersih membantu AI mendeteksi gerakan tangan dengan lebih akurat.'],
-                        ['icon' => 'M10.05 4.575a1.575...', 'title' => 'Tahan posisi beberapa detik', 'desc' => 'Setelah membentuk gestur, tahan diam agar sistem dapat mengenali huruf dengan benar.'],
-                        ['icon' => 'M7.5 3.75H6A2.25...', 'title' => 'Jarak tangan dari kamera', 'desc' => 'Idealnya 30–50 cm dari kamera agar detail jari dapat terdeteksi secara optimal.']
+                        ['icon' => 'M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z', 'title' => 'Posisikan tangan di tengah frame', 'desc' => 'Pastikan seluruh tangan terlihat dalam area kamera dan tidak terpotong di tepi layar.'],
+                        ['icon' => 'M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM9.75 4.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75v.75H9.75V4.5zM6.75 9.75a.75.75 0 01.75-.75h10.5a.75.75 0 01.75.75v9a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75v-9z', 'title' => 'Gunakan latar belakang polos', 'desc' => 'Latar yang bersih membantu AI mendeteksi gerakan tangan dengan lebih akurat.'],
+                        ['icon' => 'M9.75 9.75a.75.75 0 01.75-.75h3a.75.75 0 01.75.75v3a.75.75 0 01-.75.75h-3a.75.75 0 01-.75-.75v-3zM12 5.25a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V6a.75.75 0 01.75-.75zM12 16.5a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zM18.5 13.5a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM3.25 13.5a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H4a.75.75 0 01-.75-.75zM17.25 5.25a.75.75 0 010 1.06l-1.06 1.06a.75.75 0 01-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zM8.87 16.87a.75.75 0 010 1.06l-1.06 1.06a.75.75 0 01-1.06-1.06l1.06-1.06a.75.75 0 011.06 0z', 'title' => 'Tahan posisi beberapa detik', 'desc' => 'Setelah membentuk gestur, tahan diam agar sistem dapat mengenali huruf dengan benar.'],
+                        ['icon' => 'M12 6a.75.75 0 01.75.75v4.5a.75.75 0 01-.75.75H7.5a.75.75 0 010-1.5h3.75V6.75A.75.75 0 0112 6zM12 18a.75.75 0 01-.75-.75v-4.5a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-3.75v3.75a.75.75 0 01-.75.75z', 'title' => 'Jarak tangan dari kamera', 'desc' => 'Idealnya 30–50 cm dari kamera agar detail jari dapat terdeteksi secara optimal.']
                     ];
                 @endphp
-                @foreach($tips as $tip)
-                    <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-3 border border-gray-100">
+                @foreach($tips as $index => $tip)
+                    <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-3 border border-gray-100 hover:border-pink-200 transition-colors">
                         <div class="w-7 h-7 bg-pink-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg class="w-3.5 h-3.5 text-pink-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $tip['icon'] }}"/>
-                            </svg>
+                            <span class="text-xs font-bold text-pink-600">{{ $index + 1 }}</span>
                         </div>
-                        <div>
+                        <div class="flex-1">
                             <p class="text-sm font-bold text-gray-800 leading-snug">{{ $tip['title'] }}</p>
                             <p class="text-xs text-gray-500 mt-1 leading-relaxed">{{ $tip['desc'] }}</p>
                         </div>
@@ -185,10 +186,17 @@
             </div>
 
             <div class="bg-amber-50 border border-amber-200 rounded-xl p-3">
-                <p class="text-xs font-bold text-amber-800 mb-1"> Tips</p>
-                <p class="text-xs text-amber-700 leading-relaxed">
-                    Jika gestur tidak terdeteksi, coba perbaiki pencahayaan atau pindahkan tangan sedikit lebih ke depan kamera.
-                </p>
+                <div class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/>
+                    </svg>
+                    <div>
+                        <p class="text-xs font-bold text-amber-800 mb-1"> Tips</p>
+                        <p class="text-xs text-amber-700 leading-relaxed">
+                            Jika gestur tidak terdeteksi, coba perbaiki pencahayaan atau pindahkan tangan sedikit lebih ke depan kamera.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
