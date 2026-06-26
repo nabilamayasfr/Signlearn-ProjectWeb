@@ -117,7 +117,7 @@
                                     Huruf Berikutnya
                                 </a>
                             @else
-                                <a href="{{ route('pembelajaran') }}" class="w-full py-2.5 rounded-xl text-sm font-bold text-white text-center shadow hover:opacity-90 transition bg-gradient-to-r from-pink-500 to-pink-700">
+                                <a href="{{ route('pembelajaran.index') }}" class="w-full py-2.5 rounded-xl text-sm font-bold text-white text-center shadow hover:opacity-90 transition bg-gradient-to-r from-pink-500 to-pink-700">
                                     Selesai
                                 </a>
                             @endif

@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/histori', [HistoriController::class, 'index'])->name('histori');
     Route::get('/profil',  [ProfilController::class, 'index'])->name('profil');
     Route::put('/profil',  [ProfilController::class, 'update'])->name('profile.update');
+    Route::post('/profile/avatar', [ProfilController::class, 'updateAvatar'])->name('profile.avatar');
 
     // Praktik AI
     Route::post('/praktik/simpan', [PraktikController::class, 'simpan'])->name('praktik.simpan')->middleware('auth');

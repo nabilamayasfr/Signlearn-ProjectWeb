@@ -61,16 +61,16 @@
 
     <div class="grid md:grid-cols-3 gap-4">
 
-      <!-- CARD -->
+      <!-- CARD Belajar SIBI -->
       <a href="{{ route('pembelajaran.index') }}"
-          class="flex justify-between items-center p-5 rounded-2xl text-white shadow-lg hover:scale-105 hover:shadow-xl transition bg-gradient-to-br from-pink-300 to-pink-600">
+          class="flex justify-between items-center p-5 rounded-2xl bg-white border-2 border-pink-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
 
         <div>
-          <h3 class="font-extrabold mb-3">
+          <h3 class="font-extrabold text-[#2D1A2E] mb-3">
             Belajar<br>SIBI
           </h3>
 
-          <span class="px-4 py-1 text-sm rounded-full bg-white/30 border border-white/40">
+          <span class="px-4 py-1 text-sm rounded-full bg-pink-600 text-white font-semibold shadow-md">
             Mulai ›
           </span>
         </div>
@@ -80,15 +80,16 @@
              alt="SIBI">
       </a>
 
+      <!-- CARD Belajar Bisindo -->
       <a href="{{ route('pembelajaran.index') }}"
-         class="flex justify-between items-center p-5 rounded-2xl text-white shadow-lg hover:scale-105 hover:shadow-xl transition bg-gradient-to-br from-pink-300 to-pink-600">
+         class="flex justify-between items-center p-5 rounded-2xl bg-white border-2 border-pink-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
 
         <div>
-          <h3 class="font-extrabold mb-3">
+          <h3 class="font-extrabold text-[#2D1A2E] mb-3">
             Belajar<br>Bisindo
           </h3>
 
-          <span class="px-4 py-1 text-sm rounded-full bg-white/30 border border-white/40">
+          <span class="px-4 py-1 text-sm rounded-full bg-pink-600 text-white font-semibold shadow-md">
             Mulai ›
           </span>
         </div>
@@ -98,15 +99,16 @@
              alt="Bisindo">
       </a>
 
+      <!-- CARD Latihan -->
       <a href="{{ route('latihan') }}"
-         class="flex justify-between items-center p-5 rounded-2xl text-white shadow-lg hover:scale-105 hover:shadow-xl transition bg-gradient-to-br from-pink-400 to-pink-700">
+         class="flex justify-between items-center p-5 rounded-2xl bg-white border-2 border-pink-200 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
 
         <div>
-          <h3 class="font-extrabold mb-3">
+          <h3 class="font-extrabold text-[#2D1A2E] mb-3">
             Latihan Bahasa<br>Isyarat
           </h3>
 
-          <span class="px-4 py-1 text-sm rounded-full bg-white/30 border border-white/40">
+          <span class="px-4 py-1 text-sm rounded-full bg-pink-600 text-white font-semibold shadow-md">
             Mulai ›
           </span>
         </div>
@@ -157,67 +159,117 @@
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- DETEKSI ISYARAT -->
   <section class="px-6 md:px-12 pb-10">
 
     <p class="text-xl font-extrabold text-[#2D1A2E] mb-4">
-      FAQ dan Cara Penggunaan
+      Deteksi Isyarat
     </p>
 
-    <div class="bg-white rounded-2xl p-6 shadow-md border border-pink-100 hover:shadow-xl transition">
+    <div class="grid md:grid-cols-2 gap-4">
 
-      <div class="grid md:grid-cols-2 gap-4 mb-6">
+      <!-- Card BISINDO -->
+      <div class="bg-white rounded-2xl p-6 shadow-md border-2 border-pink-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-extrabold text-[#2D1A2E]">Deteksi Isyarat BISINDO</h3>
+        </div>
 
-        <div class="flex justify-between items-center gap-3 p-[22px_18px] rounded-2xl text-white
-bg-[linear-gradient(135deg,_#E4ACDB_50%,_#BA76AE_100%)]
-shadow-[0_4px_16px_rgba(200,45,133,0.15)]
-border-[1.5px] border-[rgba(255,255,255,0.4)]
-cursor-pointer transition-all duration-200
-hover:-translate-y-[3px]
-hover:shadow-[0_10px_28px_rgba(200,45,133,0.25)]">
+        <p class="text-sm text-gray-500 mb-4">
+          Deteksi bahasa isyarat BISINDO menggunakan kamera. Pilih huruf A-Z dan praktikkan langsung!
+        </p>
 
-    <p class="text-[0.95rem] font-bold text-white leading-[1.45] drop-shadow-sm">
-        Ada pertanyaan?<br>Temukan jawabannya disini.
-    </p>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="flex-1">
+            <select id="hurufBisindo" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm">
+              @foreach(range('A', 'Z') as $huruf)
+                <option value="{{ $huruf }}">Huruf {{ $huruf }}</option>
+              @endforeach
+            </select>
+          </div>
+          <button onclick="startDetection('BISINDO')"
+                  class="px-4 py-2 rounded-xl bg-pink-600 text-white font-bold shadow-lg hover:bg-pink-700 hover:-translate-y-0.5 transition text-sm">
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              Deteksi
+            </span>
+          </button>
+        </div>
 
-    <img src="{{ asset('assets/icon-faq.png') }}"
-         class="w-[60px] h-[60px] object-contain flex-shrink-0
-         bg-white/25 rounded-[10px] p-[5px]
-         border-[1.5px] border-dashed border-white/50
-         drop-shadow-[0_3px_6px_rgba(0,0,0,0.12)]">
-</div>
-
-
-<div class="flex justify-between items-center gap-3 p-[22px_18px] rounded-2xl text-white
-bg-[linear-gradient(135deg,_#F1A2D0_53%,_#FE6AC0_100%)]
-shadow-[0_4px_16px_rgba(200,45,133,0.15)]
-border-[1.5px] border-[rgba(255,255,255,0.4)]
-cursor-pointer transition-all duration-200
-hover:-translate-y-[3px]
-hover:shadow-[0_10px_28px_rgba(200,45,133,0.25)]">
-
-    <p class="text-[0.95rem] font-bold text-white leading-[1.45] drop-shadow-sm">
-        Panduan Cara penggunaan aplikasi SIGNLEARN
-    </p>
-
-    <img src="{{ asset('assets/icon-panduan.png') }}"
-         class="w-[60px] h-[60px] object-contain flex-shrink-0
-         bg-white/25 rounded-[10px] p-[5px]
-         border-[1.5px] border-dashed border-white/50
-         drop-shadow-[0_3px_6px_rgba(0,0,0,0.12)]">
-</div>
-
+        <div class="text-xs text-gray-400 flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+          Kamera siap digunakan
+        </div>
       </div>
 
-      <a href="{{ route('faq') }}"
-         class="block mx-auto w-fit px-10 py-3 rounded-full bg-pink-600 text-white font-semibold shadow-lg hover:bg-pink-800 hover:-translate-y-1 transition">
-         Klik Disini
-      </a>
+      <!-- Card SIBI -->
+      <div class="bg-white rounded-2xl p-6 shadow-md border-2 border-pink-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
+            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-extrabold text-[#2D1A2E]">Deteksi Isyarat SIBI</h3>
+        </div>
+
+        <p class="text-sm text-gray-500 mb-4">
+          Deteksi bahasa isyarat SIBI menggunakan kamera. Pilih huruf A-Z dan praktikkan langsung!
+        </p>
+
+        <div class="flex items-center gap-2 mb-4">
+          <div class="flex-1">
+            <select id="hurufSibi" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm">
+              @foreach(range('A', 'Z') as $huruf)
+                <option value="{{ $huruf }}">Huruf {{ $huruf }}</option>
+              @endforeach
+            </select>
+          </div>
+          <button onclick="startDetection('SIBI')"
+                  class="px-4 py-2 rounded-xl bg-pink-600 text-white font-bold shadow-lg hover:bg-pink-700 hover:-translate-y-0.5 transition text-sm">
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              Deteksi
+            </span>
+          </button>
+        </div>
+
+        <div class="text-xs text-gray-400 flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+          Kamera siap digunakan
+        </div>
+      </div>
 
     </div>
   </section>
 
 </div>
+
+@push('scripts')
+<script>
+  function startDetection(module) {
+    let huruf;
+    if (module === 'BISINDO') {
+      huruf = document.getElementById('hurufBisindo').value;
+    } else {
+      huruf = document.getElementById('hurufSibi').value;
+    }
+
+    // Redirect ke halaman praktik dengan parameter
+    window.location.href = `/praktik/${module.toLowerCase()}/${huruf.toLowerCase()}`;
+  }
+</script>
+@endpush
 
 @include('layout.footer')
 

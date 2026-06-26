@@ -60,13 +60,24 @@
     color: #C82D85;
   }
   .btn-profile .avatar {
-    width: 32px; height: 32px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: linear-gradient(135deg, #F7DAED, #C82D85);
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 13px;
     color: #fff;
     font-weight: 800;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .btn-profile .avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
   }
 
   /* Mobile */
@@ -124,46 +135,46 @@
     .nav-mobile-menu.open { display: flex; }
   }
   .profile-dropdown {
-  position: relative;
-}
+    position: relative;
+  }
 
-.profile-menu {
-  position: absolute;
-  top: 58px;
-  right: 0;
-  width: 180px;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  border: 1px solid #f3d0e3;
-  padding: 8px;
-  display: none;
-  flex-direction: column;
-  z-index: 999;
-}
+  .profile-menu {
+    position: absolute;
+    top: 58px;
+    right: 0;
+    width: 180px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border: 1px solid #f3d0e3;
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    z-index: 999;
+  }
 
-.profile-menu.show {
-  display: flex;
-}
+  .profile-menu.show {
+    display: flex;
+  }
 
-.profile-menu a,
-.profile-menu button {
-  padding: 12px;
-  border: none;
-  background: none;
-  text-align: left;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  color: #492F48;
-  border-radius: 10px;
-}
+  .profile-menu a,
+  .profile-menu button {
+    padding: 12px;
+    border: none;
+    background: none;
+    text-align: left;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    color: #492F48;
+    border-radius: 10px;
+  }
 
-.profile-menu a:hover,
-.profile-menu button:hover {
-  background: #FEE6F2;
-  color: #C82D85;
-}
+  .profile-menu a:hover,
+  .profile-menu button:hover {
+    background: #FEE6F2;
+    color: #C82D85;
+  }
 </style>
 @endpush
 
@@ -194,23 +205,27 @@
   </nav>
 
   <!-- Desktop Profile Button -->
-<div class="profile-dropdown">
-  <button class="btn-profile" onclick="toggleProfileMenu(event)">
-    <div class="avatar">
-      {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+  <div class="profile-dropdown">
+    <button class="btn-profile" onclick="toggleProfileMenu(event)">
+      <div class="avatar">
+        @if(auth()->user()->avatar && file_exists(public_path('assets/avatars/' . auth()->user()->avatar)))
+          <img src="{{ asset('assets/avatars/' . auth()->user()->avatar) }}"
+               alt="Profile">
+        @else
+          {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+        @endif
+      </div>
+      {{ auth()->user()->name ?? 'User' }}
+    </button>
+
+    <div class="profile-menu" id="profileMenu">
+      <a href="{{ route('profil') }}">Profile</a>
+      <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit">Keluar</button>
+      </form>
     </div>
-    {{ auth()->user()->name ?? 'User' }}
-  </button>
-
-  <div class="profile-menu" id="profileMenu">
-    <a href="{{ route('profil') }}">Profile</a>
-
-    <form action="{{ route('logout') }}" method="POST">
-      @csrf
-      <button type="submit">Keluar</button>
-    </form>
   </div>
-</div>
 
   <!-- Hamburger (Mobile) -->
   <div class="nav-hamburger" onclick="toggleMobileNav()" id="nav-hamburger">
@@ -241,7 +256,12 @@
   <div class="profile-link-mobile">
     <a href="{{ route('profil') }}" class="btn-profile" style="display:inline-flex;">
       <div class="avatar">
-        {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+        @if(auth()->user()->avatar && file_exists(public_path('assets/avatars/' . auth()->user()->avatar)))
+          <img src="{{ asset('assets/avatars/' . auth()->user()->avatar) }}"
+               alt="Profile">
+        @else
+          {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+        @endif
       </div>
       {{ auth()->user()->name ?? 'User' }}
     </a>

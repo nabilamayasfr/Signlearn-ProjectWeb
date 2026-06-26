@@ -32,11 +32,55 @@
         </div>
         @endif
 
+       {{-- ===== PROFIL CARD DENGAN FOTO ===== --}}
+<div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-6 mb-6">
+    <h2 class="text-lg font-extrabold text-gray-800 mb-4">Foto Profil</h2>
+
+    <div class="flex items-center gap-6 mb-6">
+        <div class="relative shrink-0">
+            <div class="relative w-28 h-28 rounded-2xl overflow-hidden bg-gradient-to-br from-pink-100 to-purple-100 shadow-lg border-2 border-pink-200">
+                @if($user->avatar && file_exists(public_path('assets/avatars/' . $user->avatar)))
+                    <img src="{{ asset('assets/avatars/' . $user->avatar) }}"
+                         alt="Profile"
+                         class="w-full h-full object-cover">
+                @else
+                    <div class="w-full h-full flex items-center justify-center">
+                        <span class="text-6xl font-bold text-pink-300">
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                        </span>
+                    </div>
+                @endif
+            </div>
+            <button onclick="document.getElementById('avatarInput').click()"
+                    class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-pink-600 text-white flex items-center justify-center shadow-lg hover:bg-pink-700 hover:scale-105 transition-all">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4">
+                    <path d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                </svg>
+            </button>
+            <form id="avatarForm" action="{{ route('profile.avatar') }}" method="POST" enctype="multipart/form-data" class="hidden">
+                @csrf
+                <input type="file"
+                       id="avatarInput"
+                       name="avatar"
+                       accept="image/*"
+                       onchange="document.getElementById('avatarForm').submit()">
+            </form>
+        </div>
+        <div>
+            <p class="text-2xl font-black text-gray-900">{{ $user->name }}</p>
+            <p class="text-sm text-gray-500">{{ $user->email }}</p>
+            <button onclick="document.getElementById('avatarInput').click()"
+                    class="text-sm font-semibold text-pink-600 hover:text-pink-700 transition-colors mt-1">
+                Ganti Foto
+            </button>
+        </div>
+    </div>
+</div>
+
         {{-- ===== INFORMASI AKUN ===== --}}
         <div class="bg-white rounded-2xl shadow-sm border border-pink-100 p-6 mb-6">
             <h2 class="text-lg font-extrabold text-gray-800 mb-4">Informasi Akun</h2>
 
-            {{-- PERHATIAN: action menggunakan route('profile.update') --}}
             <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
                 @csrf
                 @method('PUT')
@@ -85,7 +129,7 @@
                     @enderror
                 </div>
 
-                <hr class="my-4 border-gray-200">
+
 
                 {{-- Ganti Password --}}
                 <div>
@@ -152,7 +196,7 @@
             @endif
             @else
             <p class="text-4xl font-extrabold text-gray-300 mt-1">-</p>
-            <a href="{{ route('pembelajaran') }}"
+            <a href="{{ route('pembelajaran.index') }}"
                 class="text-xs text-pink-400 mt-1 block hover:underline">
                 Mulai praktik →
             </a>
@@ -221,7 +265,7 @@
 
         </div>
 
-
+    </div>
 </div>
 
 <script>

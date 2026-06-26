@@ -53,13 +53,29 @@ class PembelajaranController extends Controller
     {
         $module = strtoupper($request->query('module', 'BISINDO'));
 
+        // Ambil huruf yang sudah dikuasai
         $mastered = UserProgress::where('user_id', Auth::id())
             ->where('module', $module)
             ->pluck('huruf')
             ->toArray();
 
+        // Ambil semua data modul untuk module yang dipilih
+        $moduls = Modul::where('modul', $module)
+            ->orderBy('huruf', 'asc')
+            ->get();
+
+        // Buat data letter dengan thumbnail dan penjelasan
+        $letterData = [];
+        foreach ($moduls as $modul) {
+            $letterData[$modul->huruf] = [
+                'thumbnail' => $modul->thumbnail,
+                'penjelasan' => $modul->penjelasan,
+            ];
+        }
+
         return response()->json([
             'mastered' => $mastered,
+            'letterData' => $letterData,
         ]);
     }
 
@@ -84,15 +100,31 @@ class PembelajaranController extends Controller
             'huruf'   => $huruf,
         ]);
 
-        // Kembalikan semua huruf yang sudah dikuasai untuk modul ini
+        // Ambil semua huruf yang sudah dikuasai untuk modul ini
         $mastered = UserProgress::where('user_id', Auth::id())
             ->where('module', $module)
             ->pluck('huruf')
             ->toArray();
 
+        // Ambil semua data modul untuk module yang dipilih
+        $moduls = Modul::where('modul', $module)
+            ->orderBy('huruf', 'asc')
+            ->get();
+
+        // Buat data letter dengan thumbnail dan penjelasan
+        $letterData = [];
+        foreach ($moduls as $modul) {
+            $letterData[$modul->huruf] = [
+                'thumbnail' => $modul->thumbnail,
+                'penjelasan' => $modul->penjelasan,
+            ];
+        }
+
         return response()->json([
             'success'  => true,
             'mastered' => $mastered,
+            'letterData' => $letterData,
+            'message' => 'Progress berhasil disimpan',
         ]);
     }
 }

@@ -62,7 +62,7 @@ class ProfilController extends Controller
             ->select('language', 'huruf')
             ->distinct()
             ->get()
-            ->map(fn($r) => $r->language . '-' . $r->huruf); // contoh: "bisindo-A"
+            ->map(fn($r) => $r->language . '-' . $r->huruf);
 
         $progressCount   = $hurufDikuasaiPraktik52->unique()->count();
         $progressPercent = round(($progressCount / 52) * 100);
@@ -99,6 +99,34 @@ class ProfilController extends Controller
     }
 
     /**
+     * Update avatar / foto profil (simpan di assets/avatars)
+     */
+    public function updateAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+        ]);
+
+        $user = Auth::user();
+
+        // Hapus avatar lama jika ada
+        if ($user->avatar && file_exists(public_path('assets/avatars/' . $user->avatar))) {
+            unlink(public_path('assets/avatars/' . $user->avatar));
+        }
+
+        // Upload avatar baru ke assets/avatars
+        $file = $request->file('avatar');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('assets/avatars'), $filename);
+
+        // Simpan nama file ke database
+        $user->avatar = $filename;
+        $user->save();
+
+        return redirect()->route('profil')->with('success', 'Foto profil berhasil diupdate!');
+    }
+
+    /**
      * Simpan perubahan profil user.
      */
     public function update(Request $request)
@@ -106,11 +134,13 @@ class ProfilController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'nama_lengkap'  => 'required|string|max:100',
-            'username'      => ['nullable', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
-            'email'         => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-            'nomor_telepon' => 'nullable|string|max:20',
-            'password'      => 'nullable|string|min:8|confirmed',
+            'nama_lengkap'    => 'required|string|max:100',
+            'username'        => ['nullable', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+            'email'           => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+            'nomor_telepon'   => 'nullable|string|max:20',
+            'tanggal_lahir'   => 'nullable|date|before:today',
+            'jenis_kelamin'   => 'nullable|in:Laki-laki,Perempuan',
+            'password'        => 'nullable|string|min:8|confirmed',
         ]);
 
         // Update field dasar
@@ -125,6 +155,16 @@ class ProfilController extends Controller
         // Update phone jika kolom ada
         if (isset($user->phone)) {
             $user->phone = $request->nomor_telepon;
+        }
+
+        // Update birth_date jika kolom ada
+        if (isset($user->birth_date)) {
+            $user->birth_date = $request->tanggal_lahir;
+        }
+
+        // Update gender jika kolom ada
+        if (isset($user->gender)) {
+            $user->gender = $request->jenis_kelamin;
         }
 
         // Update password hanya kalau diisi
