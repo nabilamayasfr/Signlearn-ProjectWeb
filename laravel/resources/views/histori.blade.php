@@ -1,6 +1,7 @@
 @extends('layout.app')
 @section('title', 'SignLearn - Riwayat Belajar')
 @section('content')
+
 @include('layout.navbar')
 
 @push('styles')
@@ -134,11 +135,11 @@
 
           <div class="flex items-center gap-1.5 shrink-0">
             <span class="px-3.5 py-1.5 rounded-full bg-[#C82D85] text-white text-[0.82rem] font-bold">
-               {{ $item['benar'] }}
+              ✅ {{ $item['benar'] }}
             </span>
             <span class="px-3.5 py-1.5 rounded-full bg-[#F7DAED] text-[#C82D85] text-[0.82rem] font-bold
                          border-[1.5px] border-[#F0B8D8]">
-               {{ $item['salah'] }}
+              ❌ {{ $item['salah'] }}
             </span>
           </div>
         </div>
@@ -152,7 +153,7 @@
           <a href="{{ route('latihan') }}"
              class="inline-block mt-4 px-6 py-2.5 rounded-full bg-[#C82D85] text-white
                     text-[0.88rem] font-bold no-underline mr-2">Mulai Latihan →</a>
-          <a href="{{ route('pembelajaran') }}"
+          <a href="{{ route('pembelajaran.index') }}"
              class="inline-block mt-4 px-6 py-2.5 rounded-full bg-[#2D85C8] text-white
                     text-[0.88rem] font-bold no-underline">Mulai Praktik →</a>
         </div>
@@ -184,6 +185,10 @@
   @include('layout.footer')
 </div>
 
+{{-- ══════════════════════════════
+     MODAL DETAIL PRAKTIK HURUF
+     FIX: ID unik, tidak duplikat, struktur bersih
+══════════════════════════════ --}}
 <div id="modal-praktik"
      class="fixed inset-0 z-[999] hidden items-center justify-center p-4"
      style="background: rgba(73,47,72,0.52); backdrop-filter: blur(5px);"
@@ -235,11 +240,11 @@
       {{-- Detail info: hanya Tanggal & Durasi --}}
       <div class="flex flex-col gap-2 mb-5">
         <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
-          <span class="text-[0.83rem] text-[#7A4B78] font-semibold"> Tanggal</span>
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold">📅 Tanggal</span>
           <span class="text-[0.86rem] text-[#492F48] font-bold" id="pd-tanggal-detail">—</span>
         </div>
         <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
-          <span class="text-[0.83rem] text-[#7A4B78] font-semibold"> Durasi</span>
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold">⏱ Durasi</span>
           <span class="text-[0.86rem] text-[#492F48] font-bold" id="pd-durasi">—</span>
         </div>
       </div>
@@ -283,13 +288,13 @@
         </div>
         <div>
           <h2 class="text-[1.05rem] font-extrabold text-white mb-0.5" id="k-judul">Kuis Isyarat</h2>
-          <span class="text-[0.82rem] text-[rgba(255,255,255,0.88)] font-medium" id="k-subjudul"></span>
+          <span class="text-[0.82rem] text-[rgba(255,255,255,0.88)] font-medium" id="k-subjudul">—</span>
         </div>
       </div>
       <button class="w-8 h-8 rounded-full bg-[rgba(255,255,255,0.22)] border-none cursor-pointer
                      flex items-center justify-center text-[15px] text-white font-bold
                      transition-colors duration-200 hover:bg-[rgba(255,255,255,0.38)] shrink-0"
-              onclick="tutupModal('modal-kuis')"></button>
+              onclick="tutupModal('modal-kuis')">✕</button>
     </div>
 
     <div class="px-6 py-[22px] overflow-y-auto flex-1">
@@ -304,11 +309,11 @@
       {{-- Stat benar / salah --}}
       <div class="grid grid-cols-2 gap-2.5 mb-4">
         <div class="rounded-xl border border-[#B8E8C8] p-3 text-center bg-[#E8F8EE]">
-          <div class="text-[1.5rem] font-black leading-none mb-1 text-[#2D8B50]" id="k-benar"></div>
+          <div class="text-[1.5rem] font-black leading-none mb-1 text-[#2D8B50]" id="k-benar">—</div>
           <span class="text-[0.78rem] font-semibold text-[#7A4B78]">Jawaban Benar</span>
         </div>
         <div class="rounded-xl border border-[#F0BBBB] p-3 text-center bg-[#FDECEC]">
-          <div class="text-[1.5rem] font-black leading-none mb-1 text-[#B22020]" id="k-salah"></div>
+          <div class="text-[1.5rem] font-black leading-none mb-1 text-[#B22020]" id="k-salah">—</div>
           <span class="text-[0.78rem] font-semibold text-[#7A4B78]">Jawaban Salah</span>
         </div>
       </div>
@@ -316,18 +321,18 @@
       {{-- Detail info --}}
       <div class="flex flex-col gap-2 mb-4">
         <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
-          <span class="text-[0.83rem] text-[#7A4B78] font-semibold"> Tanggal</span>
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold">📅 Tanggal</span>
           <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="k-tanggal">—</span>
         </div>
         <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
-          <span class="text-[0.83rem] text-[#7A4B78] font-semibold"> Durasi</span>
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold">⏱ Durasi</span>
           <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="k-durasi">—</span>
         </div>
       </div>
 
       {{-- Daftar soal --}}
       <p class="text-[0.8rem] font-bold text-[#C82D85] uppercase tracking-[0.5px] mb-2.5">
-         Kumpulan Soal yang Dikerjakan
+        📋 Kumpulan Soal yang Dikerjakan
       </p>
       <div class="flex flex-col gap-2.5 mb-4" id="k-soal-list"></div>
 
@@ -467,10 +472,10 @@ function bukaPraktikDetail(item) {
   // Status badge
   const badge = document.getElementById('pd-status-badge');
   if ((item.status ?? '') === 'berhasil') {
-    badge.textContent = ' Berhasil';
+    badge.textContent = '✅ Berhasil';
     badge.className   = 'inline-block px-4 py-1 rounded-full text-sm font-bold bg-[#E8F8EE] text-[#2D8B50]';
   } else {
-    badge.textContent = ' Perlu Latihan';
+    badge.textContent = '⚡ Perlu Latihan';
     badge.className   = 'inline-block px-4 py-1 rounded-full text-sm font-bold bg-[#FFF8E8] text-[#B8860B]';
   }
 
@@ -510,6 +515,7 @@ function bukaKuis(data) {
     const benarSoal  = s.benar;
     const headerBg   = benarSoal ? 'bg-[#E8F8EE] border-b border-[#B8E8C8]' : 'bg-[#FDECEC] border-b border-[#F0BBBB]';
     const nomorBg    = benarSoal ? 'bg-[#5CB87A]' : 'bg-[#E57373]';
+    const statusIcon = benarSoal ? '✅' : '❌';
 
     let pilihanHTML = '';
     const pilihan   = s.pilihan ?? [];
