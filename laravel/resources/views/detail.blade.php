@@ -24,7 +24,6 @@
                     $hurufList = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
                     $currentIndex = array_search(strtoupper($huruf), $hurufList);
                     if ($currentIndex === false) $currentIndex = 0;
-                    // Tampilkan 6 huruf sliding window berpusat di huruf aktif
                     $windowStart = max(0, min($currentIndex - 2, count($hurufList) - 6));
                     $displayList = array_slice($hurufList, $windowStart, 6, true);
                 @endphp
@@ -71,11 +70,11 @@
         </div>
     </div>
 
-    {{-- MAIN GRID --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 px-4 md:px-8">
+    {{-- MAIN CARD --}}
+    <div class="px-4 md:px-8 max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-pink-50 p-6">
 
-        {{-- KIRI: Lihat Isyarat --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-pink-50 p-5">
+            {{-- Bagian Lihat Isyarat --}}
             <div class="flex items-center gap-2.5 mb-4">
                 <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center text-pink-500">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -85,46 +84,44 @@
                 <h2 class="text-base font-bold text-gray-800">Lihat Isyarat</h2>
             </div>
 
-            {{-- Gambar + zoom inline --}}
-            <div id="gambarContainer"
-                 class="relative bg-pink-50 rounded-xl flex items-center justify-center overflow-hidden"
-                 style="min-height:220px; max-height:320px;">
-                @if($dataModul->thumbnail)
-                    <img src="{{ asset('assets/' . $dataModul->thumbnail) }}"
-                         id="gambarIsyarat"
-                         alt="Huruf {{ strtoupper($huruf) }}"
-                         class="object-contain transition-all duration-300 cursor-zoom-in select-none"
-                         style="max-height:220px; max-width:100%; transform:scale(1); transform-origin:center center;"
-                         onclick="toggleZoom(this)">
+            {{-- Konten: gambar di tengah dengan teks --}}
+            <div class="flex flex-col items-center gap-3">
+                {{-- Gambar --}}
+                <div id="gambarContainer"
+                     class="relative rounded-xl flex items-center justify-center overflow-hidden border-2 border-pink-100 shadow-md hover:shadow-lg transition-shadow"
+                     style="width: 200px; height: 200px; background: linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%);">
+                    @if($dataModul->thumbnail)
+                        <img src="{{ asset('assets/' . $dataModul->thumbnail) }}"
+                             id="gambarIsyarat"
+                             alt="Huruf {{ strtoupper($huruf) }}"
+                             class="object-contain w-full h-full cursor-zoom-in p-3"
+                             onclick="toggleZoom(this)">
+                    @else
+                        <div class="text-center">
+                            <svg class="w-12 h-12 mx-auto text-pink-200" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <path d="M21 15l-5-5L5 21"/>
+                            </svg>
+                            <p class="text-gray-300 text-xs mt-1">Thumbnail belum tersedia</p>
+                        </div>
+                    @endif
+                </div>
 
-                    <button id="zoomBtn"
-                            onclick="toggleZoom(document.getElementById('gambarIsyarat'))"
-                            class="absolute bottom-3 left-3 flex items-center gap-1.5 bg-white text-gray-500 text-xs font-medium px-3 py-1.5 rounded-lg shadow-sm hover:shadow-md transition z-10">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-                        </svg>
-                        <span id="zoomLabel">Perbesar</span>
-                    </button>
-                @else
-                    <div class="text-center py-8">
-                        <svg class="w-16 h-16 mx-auto text-pink-200" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                            <rect x="3" y="3" width="18" height="18" rx="3"/>
-                            <circle cx="8.5" cy="8.5" r="1.5"/>
-                            <path d="M21 15l-5-5L5 21"/>
-                        </svg>
-                        <p class="text-gray-300 text-sm mt-2">Thumbnail belum tersedia</p>
-                    </div>
-                @endif
+                {{-- Teks "Perhatikan gambar tangan berikut" tanpa icon --}}
+                <p class="text-sm text-gray-600 font-medium">Perhatikan gambar tangan berikut</p>
             </div>
 
-            {{-- Tip --}}
-            <div class="mt-4 flex items-start gap-2.5 bg-yellow-50 border border-yellow-200 rounded-xl px-4 py-3">
-                <p class="text-sm text-yellow-800">{{ $dataModul->penjelasan ?? 'Penjelasan belum tersedia.' }}</p>
+            {{-- Divider dengan icon --}}
+            <div class="flex items-center gap-3 my-6">
+                <hr class="flex-1 border-pink-100">
+                <svg class="w-4 h-4 text-pink-300 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+                <hr class="flex-1 border-pink-100">
             </div>
-        </div>
 
-        {{-- KANAN: Cara Membuat Isyarat --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-pink-50 p-5">
+            {{-- Bagian Cara Membuat Isyarat --}}
             <div class="flex items-center gap-2.5 mb-4">
                 <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center text-pink-500">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -147,10 +144,10 @@
                 }
             @endphp
 
-            <div class="flex flex-col gap-3 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
                 @foreach($langkah as $i => $step)
-                <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-3 border border-gray-100">
-                    <div class="w-7 h-7 bg-pink-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                <div class="group flex items-start gap-3 bg-gray-50 rounded-xl p-3 border border-gray-100 hover:border-pink-200 hover:bg-pink-50/50 transition-all duration-200">
+                    <div class="w-7 h-7 bg-gradient-to-br from-pink-400 to-pink-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 shadow-sm group-hover:shadow-md transition-shadow">
                         {{ $i + 1 }}
                     </div>
                     <div class="flex-1 min-w-0">
@@ -161,17 +158,24 @@
                 @endforeach
             </div>
 
-            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="text-sm font-bold text-amber-800">Tips Penting</span>
+            {{-- Tips dengan desain modern --}}
+            <div class="mt-2 bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-100 rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-1">
+                    <div class="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="text-sm font-bold text-gray-800">Tips Penting</span>
                 </div>
-                <p class="text-xs text-amber-700 leading-relaxed">
+                <p class="text-sm text-gray-600 leading-relaxed ml-8">
                     Gunakan tangan yang nyaman dan lakukan gerakan di depan kamera agar AI dapat mendeteksi dengan baik.
                 </p>
             </div>
-        </div>
 
+        </div>
     </div>
+
 </div>
 
 {{-- BOTTOM BAR --}}
@@ -256,31 +260,50 @@
     let isZoomed = false;
 
     function toggleZoom(img) {
-        const container = document.getElementById('gambarContainer');
-        const label = document.getElementById('zoomLabel');
-
         if (!isZoomed) {
-            // Perbesar: lepas overflow container, naikkan max-height, scale gambar
-            container.style.maxHeight = 'none';
-            container.style.overflow = 'visible';
-            img.style.maxHeight = 'none';
-            img.style.transform = 'scale(1.9)';
-            img.style.transformOrigin = 'center center';
-            img.style.cursor = 'zoom-out';
-            img.style.marginTop = '80px';
-            img.style.marginBottom = '80px';
-            label.textContent = 'Perkecil';
+            const backdrop = document.createElement('div');
+            backdrop.id = 'zoomBackdrop';
+            backdrop.style.position = 'fixed';
+            backdrop.style.top = '0';
+            backdrop.style.left = '0';
+            backdrop.style.width = '100%';
+            backdrop.style.height = '100%';
+            backdrop.style.backgroundColor = 'rgba(0,0,0,0.7)';
+            backdrop.style.zIndex = '999';
+            backdrop.style.cursor = 'zoom-out';
+            backdrop.onclick = function() {
+                toggleZoom(img);
+            };
+            document.body.appendChild(backdrop);
+
+            const clone = img.cloneNode(true);
+            clone.id = 'zoomImage';
+            clone.style.position = 'fixed';
+            clone.style.top = '50%';
+            clone.style.left = '50%';
+            clone.style.transform = 'translate(-50%, -50%)';
+            clone.style.maxWidth = '80vw';
+            clone.style.maxHeight = '80vh';
+            clone.style.width = 'auto';
+            clone.style.height = 'auto';
+            clone.style.objectFit = 'contain';
+            clone.style.zIndex = '1000';
+            clone.style.borderRadius = '12px';
+            clone.style.boxShadow = '0 20px 60px rgba(0,0,0,0.5)';
+            clone.style.cursor = 'zoom-out';
+            clone.onclick = function() {
+                toggleZoom(img);
+            };
+            document.body.appendChild(clone);
+
             isZoomed = true;
         } else {
-            // Perkecil: kembalikan semua
-            container.style.maxHeight = '320px';
-            container.style.overflow = 'hidden';
-            img.style.maxHeight = '220px';
-            img.style.transform = 'scale(1)';
-            img.style.cursor = 'zoom-in';
-            img.style.marginTop = '0';
-            img.style.marginBottom = '0';
-            label.textContent = 'Perbesar';
+            const backdrop = document.getElementById('zoomBackdrop');
+            if (backdrop) backdrop.remove();
+
+            const clone = document.getElementById('zoomImage');
+            if (clone) clone.remove();
+
             isZoomed = false;
         }
     }

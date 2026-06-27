@@ -9,7 +9,7 @@
 <div class="bg-pink-50 min-h-screen">
 
     {{-- FAQ SECTION --}}
-    <section class="px-6 pt-10 pb-12">
+    <section class="px-6 pt-10 pb-0">
         <div class="max-w-7xl mx-auto">
 
             <div class="flex items-start gap-2 mb-1">
@@ -62,35 +62,39 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <!-- Card 1 -->
                 <div class="bg-white rounded-xl border border-pink-100 shadow-md p-4 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-pink-200 h-full">
-                    <div class="w-full aspect-square rounded-xl bg-gradient-to-br from-pink-200 to-purple-300 flex items-center justify-center mb-3 overflow-hidden shadow-inner">
-                        <img src="{{ asset('assets/logo.png') }}" alt="Step 1" class="w-3/4 h-3/4 object-contain" />
+                    <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center mb-3">
+                        <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
                     </div>
-                    <p class="text-xs text-gray-700 leading-relaxed mb-3 flex-1">1. Masuk atau Daftar ke halaman Aplikasi SIGNLEARN</p>
-                    <a href="/register" class="inline-block w-full max-w-[120px] px-3 py-1.5 rounded-full bg-pink-500 text-white text-xs font-bold shadow-md hover:bg-pink-600 transition duration-200 text-center">Daftar</a>
+                    <p class="text-xs font-bold text-gray-700 leading-relaxed flex-1">1. Masuk atau Daftar ke halaman Aplikasi SIGNLEARN</p>
                 </div>
                 <!-- Card 2 -->
                 <div class="bg-white rounded-xl border border-pink-100 shadow-md p-4 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-pink-200 h-full">
-                    <div class="w-full aspect-square rounded-xl bg-gradient-to-br from-pink-200 to-purple-300 flex items-center justify-center mb-3 overflow-hidden shadow-inner">
-                        <img src="{{ asset('assets/logo.png') }}" alt="Step 2" class="w-3/4 h-3/4 object-contain" />
+                    <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center mb-3">
+                        <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
                     </div>
-                    <p class="text-xs text-gray-700 leading-relaxed mb-3 flex-1">2. Pilih huruf yang ingin kamu pelajari di halaman pembelajaran.</p>
-                    <a href="/pembelajaran" class="inline-block w-full max-w-[120px] px-3 py-1.5 rounded-full bg-pink-500 text-white text-xs font-bold shadow-md hover:bg-pink-600 transition duration-200 text-center">Buka Materi</a>
+                    <p class="text-xs font-bold text-gray-700 leading-relaxed flex-1">2. Pilih huruf yang ingin kamu pelajari di halaman pembelajaran.</p>
                 </div>
                 <!-- Card 3 -->
                 <div class="bg-white rounded-xl border border-pink-100 shadow-md p-4 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-pink-200 h-full">
-                    <div class="w-full aspect-square rounded-xl bg-gradient-to-br from-pink-200 to-purple-300 flex items-center justify-center mb-3 overflow-hidden shadow-inner">
-                        <img src="{{ asset('assets/logo.png') }}" alt="Step 3" class="w-3/4 h-3/4 object-contain" />
+                    <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center mb-3">
+                        <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
                     </div>
-                    <p class="text-xs text-gray-700 leading-relaxed mb-3 flex-1">3. Tiru gerakan yang ditampilkan dan gunakan kamera untuk deteksi real-time.</p>
-                    <a href="/latihan" class="inline-block w-full max-w-[120px] px-3 py-1.5 rounded-full bg-pink-500 text-white text-xs font-bold shadow-md hover:bg-pink-600 transition duration-200 text-center">Mulai Latihan</a>
+                    <p class="text-xs font-bold text-gray-700 leading-relaxed flex-1">3. Tiru gerakan yang ditampilkan dan gunakan kamera untuk deteksi real-time.</p>
                 </div>
                 <!-- Card 4 -->
                 <div class="bg-white rounded-xl border border-pink-100 shadow-md p-4 flex flex-col items-center text-center transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-pink-200 h-full">
-                    <div class="w-full aspect-square rounded-xl bg-gradient-to-br from-pink-200 to-purple-300 flex items-center justify-center mb-3 overflow-hidden shadow-inner">
-                        <img src="{{ asset('assets/logo.png') }}" alt="Step 4" class="w-3/4 h-3/4 object-contain" />
+                    <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center mb-3">
+                        <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
-                    <p class="text-xs text-gray-700 leading-relaxed mb-3 flex-1">4. Lihat feedback dan tingkatkan latihanmu.</p>
-                    <a href="/histori" class="inline-block w-full max-w-[120px] px-3 py-1.5 rounded-full bg-pink-500 text-white text-xs font-bold shadow-md hover:bg-pink-600 transition duration-200 text-center">Lihat Progress</a>
+                    <p class="text-xs font-bold text-gray-700 leading-relaxed flex-1">4. Lihat feedback dan tingkatkan latihanmu.</p>
                 </div>
             </div>
         </div>
