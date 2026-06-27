@@ -135,11 +135,11 @@
 
           <div class="flex items-center gap-1.5 shrink-0">
             <span class="px-3.5 py-1.5 rounded-full bg-[#C82D85] text-white text-[0.82rem] font-bold">
-              ✅ {{ $item['benar'] }}
+               {{ $item['benar'] }}
             </span>
             <span class="px-3.5 py-1.5 rounded-full bg-[#F7DAED] text-[#C82D85] text-[0.82rem] font-bold
                          border-[1.5px] border-[#F0B8D8]">
-              ❌ {{ $item['salah'] }}
+               {{ $item['salah'] }}
             </span>
           </div>
         </div>
@@ -472,7 +472,7 @@ function bukaPraktikDetail(item) {
   // Status badge
   const badge = document.getElementById('pd-status-badge');
   if ((item.status ?? '') === 'berhasil') {
-    badge.textContent = '✅ Berhasil';
+    badge.textContent = ' Berhasil';
     badge.className   = 'inline-block px-4 py-1 rounded-full text-sm font-bold bg-[#E8F8EE] text-[#2D8B50]';
   } else {
     badge.textContent = '⚡ Perlu Latihan';
