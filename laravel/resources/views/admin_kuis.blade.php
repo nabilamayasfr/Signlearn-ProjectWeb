@@ -1,14 +1,14 @@
 @extends('layout.admin')
 
-@section('title', 'SignLearn - Modul Pembelajaran')
+@section('title', 'SignLearn - Data Kuis')
 
 @section('content')
 
 {{-- Header --}}
 <div class="flex justify-between items-start mb-6">
     <div>
-        <h1 class="text-2xl font-extrabold text-gray-800">Modul Pembelajaran</h1>
-        <p class="text-gray-400 text-sm mt-1">Kelola modul BISINDO & SIBI beserta huruf A-Z dan referensinya</p>
+        <h1 class="text-2xl font-extrabold text-gray-800">Data Kuis</h1>
+        <p class="text-gray-400 text-sm mt-1">Kelola Kuis Latihan BISINDO & SIBI beserta huruf A-Z dan keterangannya</p>
     </div>
     <button id="btnTambahKuis"
             class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold shadow transition hover:opacity-90"
