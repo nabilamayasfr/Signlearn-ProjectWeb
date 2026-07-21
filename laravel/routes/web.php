@@ -29,13 +29,13 @@ Route::get('/faq', function () {
 
 Route::get('/pembelajaran.index', [PembelajaranController::class, 'index'])->name('pembelajaran.index')->middleware('auth');
 
-Route::get('/pembelajaran/sibi', function () {
-    return view('pembelajaran.sibi');
-})->name('pembelajaran.sibi')->middleware('auth');
+// Route::get('/pembelajaran/sibi', function () {
+//     return view('pembelajaran.sibi');
+// })->name('pembelajaran.sibi')->middleware('auth');
 
-Route::get('/pembelajaran/bisindo', function () {
-    return view('pembelajaran.bisindo');
-})->name('pembelajaran.bisindo')->middleware('auth');
+// Route::get('/pembelajaran/bisindo', function () {
+//     return view('pembelajaran.bisindo');
+// })->name('pembelajaran.bisindo')->middleware('auth');
 
 Route::get('/pembelajaran/progress',         [PembelajaranController::class, 'getProgress'])->middleware('auth');
 Route::post('/pembelajaran/progress/simpan', [PembelajaranController::class, 'simpanProgress'])->middleware('auth');
