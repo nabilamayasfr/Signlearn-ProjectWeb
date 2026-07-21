@@ -206,7 +206,7 @@
 <script>
     // Constants
     const DURASI_AWAL = 30;
-    const FASTAPI_URL = "http://127.0.0.1:8000/predict";
+    const FASTAPI_URL = "{{ env('FAST_API_URL') }}".concat("/predict");
     const TARGET_HURUF = "{{ strtoupper($huruf) }}";
     const MODULE = "{{ strtoupper($modul) }}";
 
