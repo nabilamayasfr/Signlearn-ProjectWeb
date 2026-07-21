@@ -8,7 +8,6 @@ nixPkgs = [
   "php82Extensions.curl",
   "php82Extensions.zip",
   "php82Extensions.gd",
-  "composer",
   "nodejs_22"
 ]
 
