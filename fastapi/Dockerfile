@@ -1,4 +1,6 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
+
+ENV CUDA_VISIBLE_DEVICES=-1
 
 WORKDIR /app
 
